@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>口コミを投稿する｜全国ラーメンランキング</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700;900&display=swap">
+<style>
+.phead{background:#140d0a;color:#fff;padding:30px 0 28px}
+.crumb{font-size:11px;color:#cdbfb4;margin-bottom:10px}
+.crumb a:hover{color:var(--gold)}
+.phead h1{font:900 30px/1.4 "Noto Serif JP",serif;letter-spacing:.08em}
+.phead p{font-size:12px;color:#e8ddd3;margin-top:6px}
+.post{display:grid;grid-template-columns:1fr 280px;gap:28px;align-items:start;padding-top:28px;padding-bottom:20px}
+.fcard{padding:26px 28px 30px}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px 16px}
+.fgrid .full{grid-column:1/-1}
+.req{display:inline-block;margin-left:6px;padding:0 6px;border-radius:2px;background:var(--red);color:#fff;font-size:10px;font-weight:500;line-height:1.7;vertical-align:1px}
+.opt{margin-left:6px;font-size:10px;font-weight:400;color:var(--muted)}
+textarea{width:100%;min-height:160px;padding:10px;font:13px/1.8 "Noto Sans JP",sans-serif;border:1px solid var(--line);border-radius:3px;background:var(--card);color:var(--text);resize:vertical}
+.hint{display:flex;justify-content:space-between;gap:10px;font-size:10.5px;color:var(--muted);margin-top:4px}
+.stars{display:flex;flex-direction:row-reverse;justify-content:flex-end;gap:2px}
+.stars input{position:absolute;width:1px;height:1px;opacity:0}
+.stars label{margin:0;cursor:pointer;color:var(--line);transition:color .15s}
+.stars label .ic{width:34px;height:34px}
+.stars input:checked~label,.stars label:hover,.stars label:hover~label{color:var(--gold)}
+.stars input:focus-visible+label{outline:2px solid var(--gold);outline-offset:2px;border-radius:3px}
+.rate{display:flex;align-items:center;gap:14px}
+.rate output{font:700 15px "Noto Serif JP",serif;min-width:3.5em;color:var(--muted)}
+.agree{display:flex;align-items:flex-start;gap:8px;font-size:12px;font-weight:400;margin:0;cursor:pointer}
+.agree input{width:16px;height:16px;margin-top:3px;accent-color:var(--red);flex:none}
+.err{display:none;margin-top:4px;font-size:11px;color:var(--red)}
+.bad .err{display:block}
+.bad input,.bad select,.bad textarea{border-color:var(--red)}
+.fact{display:flex;gap:12px;justify-content:flex-end;margin-top:26px;flex-wrap:wrap}
+.fact .btn{padding:13px 28px;font-size:13px}
+.thanks{display:none;text-align:center;padding:48px 24px}
+.thanks .ic{width:52px;height:52px;color:var(--red)}
+.thanks h2{font:700 20px/1.5 "Noto Serif JP",serif;margin:12px 0 8px}
+.thanks p{font-size:12px;color:var(--muted);margin-bottom:22px}
+.done form{display:none}.done .thanks{display:block}
+.tips{padding:18px 20px}
+.tips h2{font:700 14px/1.5 "Noto Serif JP",serif;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.tips h2 .ic{color:var(--gold)}
+.tips li{font-size:12px;padding:9px 0;border-top:1px solid var(--line)}
+.tips li b{display:block;font-size:12px}
+.tips li span{color:var(--muted);font-size:11px}
+.post form{display:block;border:0;padding:0}
+@media(max-width:900px){.post{grid-template-columns:1fr}.fcard{padding:20px 16px 24px}.fgrid{grid-template-columns:1fr}.phead h1{font-size:24px}.fact .btn{flex:1}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="crown" viewBox="0 0 24 24"><path d="M2 19h20l1-11-6 5-5-9-5 9-6-5z" fill="currentColor"/></symbol>
+<symbol id="bowl" viewBox="0 0 40 40"><path d="M4 18h32a16 16 0 0 1-32 0z" fill="currentColor"/><path d="M12 14c4-3 10-3 16 0M14 9l16-5M13 11l17-5" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/></symbol>
+<symbol id="srch" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15 15l6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+<symbol id="star" viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7.2-6.3-3.7-6.3 3.7 1.6-7.2L2 9.6 9 9z" fill="currentColor"/></symbol>
+<symbol id="arr" viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="cam" viewBox="0 0 24 24"><path d="M3 7h4l2-3h6l2 3h4v13H3z" fill="currentColor"/><circle cx="12" cy="13" r="3.5" fill="var(--bg)"/></symbol>
+<symbol id="check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M7 12.5l3.5 3.5L17 9" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<header>
+ <div class="wrap hd">
+  <a class="logo" href="index.html">
+   <svg class="ic"><use href="#bowl"/></svg>
+   <span><b>全国<i>ラーメン</i>ランキング <svg class="ic c"><use href="#crown"/></svg></b><small>日本全国のうまいラーメンを、ランキングで紹介</small></span>
+  </a>
+  <nav id="nav">
+   <a href="index.html">ホーム</a><a href="index.html#ranking">ランキング</a><a href="index.html#area">エリアから探す</a><a href="index.html#type">ラーメンの種類</a><a href="index.html#feature">ラーメン特集</a><a href="index.html#review">口コミ・レビュー</a>
+  </nav>
+  <span class="sp"></span>
+  <a class="hbtn" href="index.html#search" aria-label="検索"><svg class="ic"><use href="#srch"/></svg></a>
+  <button class="hbtn" id="menuBtn" aria-label="メニュー" aria-expanded="false"><svg class="ic"><use href="#menu"/></svg></button>
+ </div>
+</header>
+
+<main>
+<div class="phead">
+ <div class="wrap">
+  <div class="crumb"><a href="index.html">ホーム</a> ＞ <a href="index.html#review">口コミ・レビュー</a> ＞ 口コミを投稿する</div>
+  <h1>口コミを投稿する</h1>
+  <p>食べた一杯の感想を、次に食べる誰かへ。</p>
+ </div>
+</div>
+
+<div class="wrap post">
+ <div class="card fcard" id="box">
+  <form id="rf" novalidate>
+   <div class="fgrid">
+    <div class="full" data-f>
+     <label for="shop">お店の名前<span class="req">必須</span></label>
+     <input id="shop" name="shop" type="text" placeholder="例：らーめん ふくの屋" required>
+     <p class="err">お店の名前を入力してください。</p>
+    </div>
+    <div>
+     <label for="area">エリア<span class="req">必須</span></label>
+     <select id="area" name="area"><option value="">選択してください</option><option>北海道・東北</option><option>関東</option><option>中部・近畿</option><option>中国・四国・九州</option></select>
+    </div>
+    <div>
+     <label for="type">ラーメンの種類<span class="req">必須</span></label>
+     <select id="type" name="type"><option value="">選択してください</option><option>豚骨ラーメン</option><option>醤油ラーメン</option><option>味噌ラーメン</option><option>塩ラーメン</option><option>その他</option></select>
+    </div>
+    <div>
+     <label for="menu">食べたメニュー<span class="opt">任意</span></label>
+     <input id="menu" name="menu" type="text" placeholder="例：特製味噌らーめん">
+    </div>
+    <div>
+     <label for="date">訪問日<span class="opt">任意</span></label>
+     <input id="date" name="date" type="date">
+    </div>
+
+    <div class="full" data-f id="ratebox">
+     <label id="rl">総合評価<span class="req">必須</span></label>
+     <div class="rate">
+      <div class="stars" role="radiogroup" aria-labelledby="rl">
+       <input type="radio" name="rate" id="r5" value="5"><label for="r5" title="5点"><svg class="ic"><use href="#star"/></svg><span class="sr" hidden>5点</span></label>
+       <input type="radio" name="rate" id="r4" value="4"><label for="r4" title="4点"><svg class="ic"><use href="#star"/></svg></label>
+       <input type="radio" name="rate" id="r3" value="3"><label for="r3" title="3点"><svg class="ic"><use href="#star"/></svg></label>
+       <input type="radio" name="rate" id="r2" value="2"><label for="r2" title="2点"><svg class="ic"><use href="#star"/></svg></label>
+       <input type="radio" name="rate" id="r1" value="1"><label for="r1" title="1点"><svg class="ic"><use href="#star"/></svg></label>
+      </div>
+      <output id="ro" for="r1 r2 r3 r4 r5">未選択</output>
+     </div>
+     <p class="err">星の数を選んでください。</p>
+    </div>
+
+    <div class="full" data-f>
+     <label for="ttl">口コミのタイトル<span class="req">必須</span></label>
+     <input id="ttl" name="ttl" type="text" maxlength="40" placeholder="例：コクと甘みのバランスが絶妙な一杯" required>
+     <p class="err">タイトルを入力してください。</p>
+    </div>
+    <div class="full" data-f>
+     <label for="body">口コミ本文<span class="req">必須</span></label>
+     <textarea id="body" name="body" maxlength="500" placeholder="スープ・麺・具材の感想、待ち時間、お店の雰囲気などを書いてみましょう。" required></textarea>
+     <div class="hint"><span>20文字以上で入力してください。</span><span><b id="cnt">0</b> / 500</span></div>
+     <p class="err">口コミを20文字以上で入力してください。</p>
+    </div>
+    <div class="full">
+     <label for="nick">ニックネーム<span class="opt">任意・未入力の場合は「匿名さん」と表示されます</span></label>
+     <input id="nick" name="nick" type="text" maxlength="20" placeholder="例：ラーメン太郎">
+    </div>
+    <div class="full" data-f>
+     <label class="agree"><input type="checkbox" id="ag"><span>投稿内容は公開されます。誹謗中傷や個人情報を含まない、自分で食べた感想であることに同意します。</span></label>
+     <p class="err">同意にチェックを入れてください。</p>
+    </div>
+   </div>
+   <div class="fact">
+    <a class="btn out" href="index.html">キャンセル</a>
+    <button class="btn red" type="submit">この内容で投稿する</button>
+   </div>
+  </form>
+
+  <div class="thanks" role="status">
+   <svg class="ic"><use href="#check"/></svg>
+   <h2>口コミを投稿しました</h2>
+   <p>ご協力ありがとうございます。（デモ表示のため、内容は送信されません）</p>
+   <a class="btn red" href="index.html">トップページへ戻る <svg class="ic"><use href="#arr"/></svg></a>
+  </div>
+ </div>
+
+ <aside class="card tips">
+  <h2><svg class="ic"><use href="#cam"/></svg>書き方のヒント</h2>
+  <ul>
+   <li><b>スープと麺の印象</b><span>濃さ・香り・麺の太さや硬さを一言で。</span></li>
+   <li><b>価格と待ち時間</b><span>行く前に知りたい情報は参考になります。</span></li>
+   <li><b>おすすめの食べ方</b><span>トッピングや替え玉など、自分の定番を。</span></li>
+   <li><b>お店の雰囲気</b><span>カウンター席の数、ひとりでも入りやすいか。</span></li>
+  </ul>
+ </aside>
+</div>
+</main>
+
+<footer>
+ <div class="wrap">
+  <div class="ft">
+   <div><a class="logo" href="index.html"><svg class="ic" style="color:#fff"><use href="#bowl"/></svg><b style="font-size:17px">全国ラーメンランキング <svg class="ic c"><use href="#crown"/></svg></b></a>
+    <p class="about">全国のラーメン店と、ラーメンを愛する人をつなぐ情報サイト。<br>今日の一杯から、旅先で出会う特別な一杯まで。<br>ラーメンの楽しさとおいしさを、全国へ。</p></div>
+   <div><h4>サイトメニュー</h4><ul><li><a href="index.html#ranking">全国ランキング</a></li><li><a href="index.html#area">エリアから探す</a></li><li><a href="index.html#type">ラーメンの種類</a></li><li><a href="index.html#feature">ラーメン特集</a></li></ul></div>
+   <div><h4>その他</h4><ul><li><a href="index.html#review">口コミ・レビュー</a></li><li><a href="#">掲載店舗について</a></li><li><a href="#">お問い合わせ</a></li><li><a href="#">プライバシーポリシー</a></li></ul></div>
+   <div class="sns"><a href="#" aria-label="X">𝕏</a><a href="#" aria-label="Instagram">◎</a><a href="#" aria-label="YouTube">▶</a><button id="top" aria-label="ページ上部へ">︿</button></div>
+  </div>
+  <p class="copy">© 全国ラーメンランキング. All Right Reserved.</p>
+ </div>
+</footer>
+
+<script>
+(function(){
+ var $=function(s){return document.querySelector(s)};
+ var nav=$('#nav'),mb=$('#menuBtn');
+ mb.addEventListener('click',function(){var o=nav.classList.toggle('open');mb.setAttribute('aria-expanded',o)});
+ nav.addEventListener('click',function(e){if(e.target.tagName==='A'){nav.classList.remove('open');mb.setAttribute('aria-expanded',false)}});
+ $('#top').addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+
+ var words={1:'1点',2:'2点',3:'3点',4:'4点',5:'5点'};
+ document.querySelectorAll('input[name=rate]').forEach(function(r){
+  r.addEventListener('change',function(){$('#ro').textContent=words[r.value];$('#ro').style.color='var(--text)';$('#ratebox').classList.remove('bad')});
+ });
+ var body=$('#body'),cnt=$('#cnt');
+ body.addEventListener('input',function(){cnt.textContent=body.value.length});
+ document.querySelectorAll('[data-f] input[type=text],[data-f] textarea,#ag').forEach(function(el){
+  el.addEventListener('input',function(){el.closest('[data-f]').classList.remove('bad')});
+  el.addEventListener('change',function(){el.closest('[data-f]').classList.remove('bad')});
+ });
+
+ $('#rf').addEventListener('submit',function(e){
+  e.preventDefault();
+  var checks=[
+   [$('#shop').closest('[data-f]'),$('#shop').value.trim().length>0,$('#shop')],
+   [$('#ratebox'),!!document.querySelector('input[name=rate]:checked'),$('#r5')],
+   [$('#ttl').closest('[data-f]'),$('#ttl').value.trim().length>0,$('#ttl')],
+   [body.closest('[data-f]'),body.value.trim().length>=20,body],
+   [$('#ag').closest('[data-f]'),$('#ag').checked,$('#ag')]
+  ],first=null;
+  checks.forEach(function(c){c[0].classList.toggle('bad',!c[1]);if(!c[1]&&!first)first=c[2]});
+  var sel=[$('#area'),$('#type')];
+  sel.forEach(function(s){s.parentNode.classList.toggle('bad',!s.value);if(!s.value&&!first)first=s});
+  if(first){first.focus();return}
+  $('#box').classList.add('done');
+  window.scrollTo({top:0,behavior:'smooth'});
+ });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ラーメン店主のこだわり | 全国ラーメンランキング</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700;900&display=swap">
+<style>
+/* こだわりページ用の固有スタイル追加 */
+.kodawari-hero {
+  position: relative;
+  background: var(--dark);
+  color: #fff;
+  padding: 48px 0;
+  text-align: center;
+  overflow: hidden;
+}
+.kodawari-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(196,22,28,0.15) 0%, rgba(0,0,0,0.8) 100%);
+  pointer-events: none;
+}
+.kodawari-hero h1 {
+  font: 900 32px/1.4 "Noto Serif JP", serif;
+  margin-bottom: 12px;
+  position: relative;
+}
+.kodawari-hero p {
+  font-size: 13px;
+  color: #d8c9bd;
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+  line-height: 1.8;
+}
+
+.kodawari-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+.kodawari-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+}
+.kodawari-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+.kodawari-card .body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+.kodawari-card .tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--red);
+  background: rgba(196, 22, 28, 0.08);
+  padding: 2px 8px;
+  border-radius: 2px;
+  margin-bottom: 8px;
+  align-self: flex-start;
+}
+.kodawari-card h3 {
+  font: 700 18px/1.4 "Noto Serif JP", serif;
+  margin-bottom: 10px;
+}
+.kodawari-card p {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 16px;
+  flex-grow: 1;
+}
+.kodawari-card .quote {
+  border-left: 3px solid var(--gold);
+  padding-left: 12px;
+  font-style: italic;
+  font-size: 12px;
+  color: var(--text);
+  background: var(--alt);
+  padding: 10px 12px;
+  border-radius: 0 4px 4px 0;
+  margin-top: auto;
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="crown" viewBox="0 0 24 24"><path d="M2 19h20l1-11-6 5-5-9-5 9-6-5z" fill="currentColor"/></symbol>
+<symbol id="bowl" viewBox="0 0 40 40"><path d="M4 18h32a16 16 0 0 1-32 0z" fill="currentColor"/><path d="M12 14c4-3 10-3 16 0M14 9l16-5M13 11l17-5" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/></symbol>
+<symbol id="srch" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15 15l6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+<symbol id="menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="arr" viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<header>
+ <div class="wrap hd">
+  <a class="logo" href="index.html">
+   <svg class="ic"><use href="#bowl"/></svg>
+   <span><b>全国<i>ラーメン</i>ランキング <svg class="ic c"><use href="#crown"/></svg></b><small>日本全国のうまいラーメンを、ランキングで紹介</small></span>
+  </a>
+  <nav id="nav">
+   <a href="index.html">ホーム</a><a href="index.html#ranking">ランキング</a><a href="area.html">エリアから探す</a><a href="index.html#type">ラーメンの種類</a><a href="tokusyuu.html">ラーメン特集</a><a href="index.html#review">口コミ・レビュー</a>
+  </nav>
+  <span class="sp"></span>
+  <a class="hbtn" href="index.html#search" aria-label="検索"><svg class="ic"><use href="#srch"/></svg></a>
+  <button class="hbtn" id="menuBtn" aria-label="メニュー" aria-expanded="false"><svg class="ic"><use href="#menu"/></svg></button>
+ </div>
+</header>
+
+<main>
+<div class="kodawari-hero">
+ <div class="wrap">
+  <h1>一杯に懸ける、<span>店主のこだわり</span></h1>
+  <p>スープの一滴、麺の一本、トッピングの仕込みに至るまで。<br>全国の有名ラーメン店主が極限まで追求した「魂のこだわり」に迫ります。</p>
+ </div>
+</div>
+
+<section>
+ <div class="wrap">
+  <div class="kodawari-grid">
+   
+   <article class="kodawari-card">
+    <img src="img/b.jpg" alt="スープのこだわり">
+    <div class="body">
+     <span class="tag">SOUP / スープ</span>
+     <h3>20時間以上煮込む「一滴の妥協なき至高スープ」</h3>
+     <p>厳選された豚骨と水のみを使用し、火加減を徹底管理しながら20時間以上じっくりと炊き上げます。臭みを極限まで抑えつつ、深いコクとまろやかな口当たりを実現しています。</p>
+     <div class="quote">「一口飲んだ瞬間に、素材の旨みが全身を駆け巡るスープを目指しています。」</div>
+    </div>
+   </article>
+
+   <article class="kodawari-card">
+    <img src="img/c.jpg" alt="自家製麺のこだわり">
+    <div class="body">
+     <span class="tag">NOODLE / 自家製麺</span>
+     <h3>小麦の香りを生かす「毎朝打ち立ての自家製麺」</h3>
+     <p>その日の気温や湿度に合わせて加水率や配合を微調整。スープとの絡みや喉ごし、噛んだときの歯切れの良さを徹底追及したオリジナルの自家製麺です。</p>
+     <div class="quote">「スープをしっかり引き立てながら、麺自体の旨みも味わってほしい。」</div>
+    </div>
+   </article>
+
+   <article class="kodawari-card">
+    <img src="img/d.jpg" alt="かえし・タレのこだわり">
+    <div class="body">
+     <span class="tag">TARE / 秘伝のかえし</span>
+     <h3>創業以来継ぎ足される「熟成醤油タレ」</h3>
+     <p>全国から厳選した3種の醸造醤油を独自ブレンドし、火入れの温度と寝かせる期間をミリ単位で計算。コクとキレを極限まで引き出した店主至高の秘密レシピです。</p>
+     <div class="quote">「タレひとつでスープ全体の表情が変わる。一滴のズレも許されません。」</div>
+    </div>
+   </article>
+
+   <article class="kodawari-card">
+    <img src="img/i.jpg" alt="具材・トッピングのこだわり">
+    <div class="body">
+     <span class="tag">TOPPING / 具材</span>
+     <h3>低温調理で仕上げる「極上とろけるチャーシュー」</h3>
+     <p>厳選した銘柄豚の肩ロースを、秘伝のタレに漬け込み低温でじっくりと加熱。肉本来の旨味と柔らかさを残し、スープの温度でじわっと脂が溶け出します。</p>
+     <div class="quote">「主役であるラーメンを引き立てる、最高の脇役でありたい。」</div>
+    </div>
+   </article>
+
+  </div>
+
+  <div style="margin-top: 36px; text-align: center;">
+   <a class="btn red" href="index.html"><svg class="ic"><use href="#arr"/></svg> トップページへ戻る</a>
+  </div>
+ </div>
+</section>
+</main>
+
+<footer>
+ <div class="wrap">
+  <div class="ft">
+   <div>
+    <a class="logo" href="index.html"><svg class="ic" style="color:#fff"><use href="#bowl"/></svg><b style="font-size:17px">全国ラーメンランキング <svg class="ic c"><use href="#crown"/></svg></b></a>
+    <p class="about">全国のラーメン店と、ラーメンを愛する人をつなぐ情報サイト。<br>今日の一杯から、旅先で出会う特別な一杯まで。<br>ラーメンの楽しさとおいしさを、全国へ。</p>
+   </div>
+   <div><h4>サイトメニュー</h4><ul><li><a href="index.html#ranking">全国ランキング</a></li><li><a href="index.html#area">エリアから探す</a></li><li><a href="index.html#type">ラーメンの種類</a></li><li><a href="tokusyuu.html">ラーメン特集</a></li></ul></div>
+   <div><h4>その他</h4><ul><li><a href="index.html#review">口コミ・レビュー</a></li><li><a href="#">掲載店舗について</a></li><li><a href="#">お問い合わせ</a></li><li><a href="#">プライバシーポリシー</a></li></ul></div>
+   <div class="sns"><a href="#" aria-label="X">𝕏</a><a href="#" aria-label="Instagram">◎</a><a href="#" aria-label="YouTube">▶</a><button id="top" aria-label="ページ上部へ">︿</button></div>
+  </div>
+  <p class="copy">© 全国ラーメンランキング. All Right Reserved.</p>
+ </div>
+</footer>
+
+<script>
+(function(){
+ var $=function(s){return document.querySelector(s)};
+ var nav=$('#nav'),mb=$('#menuBtn');
+ mb.addEventListener('click',function(){var o=nav.classList.toggle('open');mb.setAttribute('aria-expanded',o)});
+ nav.addEventListener('click',function(e){if(e.target.tagName==='A'){nav.classList.remove('open');mb.setAttribute('aria-expanded',false)}});
+ $('#top').addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+})();
+</script>
+</body>
+</html>

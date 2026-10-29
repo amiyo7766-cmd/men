@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>麺処 蛇の目 | 行列のできる話題のお店 | 全国ラーメンランキング</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700;900&display=swap">
+<style>
+/* --------------------------------------------------
+   話題のお店（店舗詳細）専用追加スタイル
+-------------------------------------------------- */
+
+/* ヒーローセクション */
+.shop-hero {
+  position: relative;
+  background: var(--dark);
+  color: #fff;
+  padding: 36px 0;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+}
+.shop-hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.35;
+  filter: blur(4px);
+  transform: scale(1.05);
+}
+.shop-hero .wrap {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+  align-items: center;
+}
+.shop-header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--red);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  letter-spacing: 0.05em;
+}
+.shop-title-area h1 {
+  font: 900 36px/1.25 "Noto Serif JP", serif;
+  letter-spacing: 0.05em;
+  color: #fff;
+}
+.shop-title-area h1 span.ruby {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+.shop-catch {
+  font-size: 14px;
+  color: #e2d7ce;
+  margin: 10px 0 16px;
+  line-height: 1.6;
+}
+.shop-meta-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 12px;
+  color: #d0c2b6;
+}
+.shop-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.shop-meta-item .ic {
+  color: var(--gold);
+}
+
+/* 行列状況リアルタイムカード */
+.queue-card {
+  background: rgba(26, 20, 18, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(233, 185, 73, 0.3);
+  border-radius: 6px;
+  padding: 18px 20px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+.queue-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+}
+.queue-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.queue-live-dot {
+  width: 8px;
+  height: 8px;
+  background: #22c55e;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #22c55e;
+  animation: pulseDot 1.5s infinite;
+}
+@keyframes pulseDot {
+  0% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.2); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.queue-status-main {
+  text-align: center;
+  margin: 10px 0;
+}
+.queue-wait-time {
+  font: 900 32px/1 "Noto Serif JP", serif;
+  color: #fff;
+}
+.queue-wait-time span {
+  font-size: 14px;
+  font-weight: 400;
+  margin-left: 2px;
+}
+.queue-people {
+  font-size: 12px;
+  color: #c0b0a2;
+  margin-top: 6px;
+}
+.queue-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 14px;
+}
+.queue-actions .btn {
+  padding: 8px 10px;
+  font-size: 11px;
+}
+
+/* 2カラムレイアウト */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 28px;
+  padding: 28px 0;
+}
+
+/* メニューカード */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 14px;
+}
+.menu-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+.menu-card img {
+  width: 100%;
+  aspect-ratio: 16/10;
+  object-fit: cover;
+}
+.menu-card-body {
+  padding: 12px;
+}
+.menu-card-title {
+  font: 700 15px "Noto Serif JP", serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.menu-card-price {
+  color: var(--red);
+  font-weight: 700;
+  font-size: 14px;
+}
+.menu-card-desc {
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-top: 6px;
+  line-height: 1.6;
+}
+
+/* こだわりポイント */
+.feature-box {
+  background: var(--alt);
+  border-left: 3px solid var(--red);
+  padding: 16px 20px;
+  border-radius: 0 4px 4px 0;
+  margin-top: 14px;
+}
+.feature-box h4 {
+  font: 700 14px "Noto Serif JP", serif;
+  margin: 0 0 6px;
+  color: var(--text);
+}
+.feature-box p {
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.8;
+}
+
+/* 行列攻略ガイド表 */
+.guide-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  margin-top: 12px;
+}
+.guide-table th, .guide-table td {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  text-align: left;
+}
+.guide-table th {
+  background: var(--alt);
+  font-weight: 700;
+  width: 30%;
+}
+.guide-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 700;
+}
+.badge-busy { background: #fee2e2; color: #991b1b; }
+.badge-smooth { background: #dcfce7; color: #166534; }
+
+/* 店舗概要リスト */
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.info-table th, .info-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+.info-table th {
+  width: 90px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* Google Map風プレースホルダー */
+.map-placeholder {
+  width: 100%;
+  height: 200px;
+  background: var(--alt);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+/* 口コミカード */
+.review-item {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.review-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 12px;
+}
+.review-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+}
+.review-date {
+  font-size: 10px;
+  color: var(--muted);
+}
+.review-stars {
+  color: var(--gold);
+  font-size: 11px;
+}
+.review-text {
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+/* サイドバーブロック */
+.sidebar-box {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+.sidebar-box h3 {
+  font: 700 15px "Noto Serif JP", serif;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--gold);
+}
+
+@media (max-width: 900px) {
+  .shop-hero .wrap, .detail-grid {
+    grid-template-columns: 1fr;
+  }
+  .shop-title-area h1 {
+    font-size: 28px;
+  }
+  .queue-card {
+    margin-top: 16px;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- SVGアイコン定義 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="crown" viewBox="0 0 24 24"><path d="M2 19h20l1-11-6 5-5-9-5 9-6-5z" fill="currentColor"/></symbol>
+<symbol id="bowl" viewBox="0 0 40 40"><path d="M4 18h32a16 16 0 0 1-32 0z" fill="currentColor"/><path d="M12 14c4-3 10-3 16 0M14 9l16-5M13 11l17-5" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/></symbol>
+<symbol id="pin" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" fill="currentColor"/></symbol>
+<symbol id="srch" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15 15l6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+<symbol id="chev" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="arr" viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="star" viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7.2-6.3-3.7-6.3 3.7 1.6-7.2L2 9.6 9 9z" fill="currentColor"/></symbol>
+<symbol id="cam" viewBox="0 0 24 24"><path d="M3 7h4l2-3h6l2 3h4v13H3z" fill="currentColor"/><circle cx="12" cy="13" r="3.5" fill="var(--bg)"/></symbol>
+<symbol id="book" viewBox="0 0 24 24"><path d="M2 5h8a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H2zM22 5h-8a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h8z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+<symbol id="menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3" fill="currentColor"/><circle cx="6" cy="12" r="3" fill="currentColor"/><circle cx="18" cy="19" r="3" fill="currentColor"/><path d="M8.5 13.5l7 4.5M15.5 6.5l-7 4.5" stroke="currentColor" stroke-width="2"/></symbol>
+<symbol id="fire" viewBox="0 0 24 24"><path d="M12 2c0 3-4 6-4 10 0 4.4 3.6 8 8 8s8-3.6 8-8c0-5-5-7-5-10 0 0-1 2-2 3-1-3-5-3-5-3z" fill="currentColor"/></symbol>
+</svg>
+
+<!-- ヘッダー -->
+<header>
+ <div class="wrap hd">
+  <a class="logo" href="index.html">
+   <svg class="ic"><use href="#bowl"/></svg>
+   <span><b>全国<i>ラーメン</i>ランキング <svg class="ic c"><use href="#crown"/></svg></b><small>日本全国のうまいラーメンを、ランキングで紹介</small></span>
+  </a>
+  <nav id="nav">
+   <a href="index.html">ホーム</a>
+   <a href="index.html#ranking">ランキング</a>
+   <a href="area.html">エリアから探す</a>
+   <a href="index.html#type">ラーメンの種類</a>
+   <a href="tokusyuu.html">ラーメン特集</a>
+   <a href="kutikomi.html">口コミ・レビュー</a>
+  </nav>
+  <span class="sp"></span>
+  <a class="hbtn" href="index.html#search" aria-label="検索"><svg class="ic"><use href="#srch"/></svg></a>
+  <button class="hbtn" id="menuBtn" aria-label="メニュー" aria-expanded="false"><svg class="ic"><use href="#menu"/></svg></button>
+ </div>
+</header>
+
+<main>
+<!-- 店舗メインビジュアル / ヒーロー -->
+<section class="shop-hero">
+ <img class="shop-hero-bg" src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=1200&q=80" alt="麺処 蛇の目 店内">
+ <div class="wrap">
+  <div class="shop-title-area">
+   <div class="shop-header-badge"><svg class="ic"><use href="#fire"/></svg> 行列の絶えない話題店</div>
+   <h1>
+    <span class="ruby">めんどころ じゃのめ</span>
+    麺処 蛇の目
+   </h1>
+   <p class="shop-catch">【東京・神田】創業以来行列が止まらない極上濃厚鶏白湯。丸鶏の旨みを極限まで抽出した至高の一杯。</p>
+   <div class="shop-meta-list">
+    <div class="shop-meta-item"><svg class="ic"><use href="#pin"/></svg> 東京都千代田区神田錦町3-12-8</div>
+    <div class="shop-meta-item"><svg class="ic"><use href="#bowl"/></svg> 濃厚鶏白湯ラーメン</div>
+    <div class="shop-meta-item"><svg class="ic"><use href="#star"/></svg> <strong>4.68</strong>（レビュー 2,840件）</div>
+   </div>
+  </div>
+
+  <!-- 行列ライブステータス -->
+  <div class="queue-card">
+   <div class="queue-header">
+    <div class="queue-title"><span class="queue-live-dot"></span> リアルタイム行列状況</div>
+    <span style="font-size:10px; color:#a09080;">10分前更新</span>
+   </div>
+   <div class="queue-status-main">
+    <div style="font-size:11px; color:#c0b0a2; margin-bottom:4px;">現在の推定待ち時間</div>
+    <div class="queue-wait-time">約 45〜60 <span>分</span></div>
+    <div class="queue-people"><svg class="ic"><use href="#clock"/></svg> 外待ち 約 22 名並び中</div>
+   </div>
+   <div class="queue-actions">
+    <button class="btn red" data-toast="お気に入り店舗に登録しました（デモ）"><svg class="ic"><use href="#star"/></svg> お気に入り</button>
+    <button class="btn line" data-toast="店舗情報をシェアしました（デモ）"><svg class="ic"><use href="#share"/></svg> シェア</button>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- メインコンテンツ (2カラム) -->
+<div class="wrap">
+ <div class="detail-grid">
+  
+  <!-- 左カラム: メイン詳細情報 -->
+  <div class="main-content">
+   
+   <!-- 店舗のこだわり -->
+   <section style="padding:0 0 24px;">
+    <div class="sh"><svg class="ic"><use href="#crown"/></svg><div><small>CONCEPT</small><h2>スープと麺への絶対的こだわり</h2></div></div>
+    <p style="font-size:13px; line-height:1.8;">
+     開店前から連日数十人の行列を作る「麺処 蛇の目」。一番人気は、宮崎県産地鶏を12時間以上じっくり炊き上げたドロッと濃密な特製鶏白湯スープです。口に入れた瞬間に広がる芳醇な鶏のコクと、特注の平打ち中太ストレート麺との絡みは一度食べたら忘れられない味わい。
+    </p>
+    
+    <div class="feature-box">
+     <h4>① 奇跡の鶏白湯スープ</h4>
+     <p>丸鶏と手羽先を贅沢に用い、高火力で旨味を凝縮。化学調味料を一切使用せず、素材本来の自然な甘みと深いコラーゲンを引き出しています。</p>
+    </div>
+
+    <div class="feature-box">
+     <h4>② 自家製・超極薄豚肩ロースチャーシュー</h4>
+     <p>低温調理で仕上げたしっとり柔らかなチャーシューは、スープの熱でじっくり脂が溶け出し、最高の味わいに変化します。</p>
+    </div>
+   </section>
+
+   <!-- 看板メニュー一覧 -->
+   <section style="padding:20px 0; border-top:1px solid var(--line);">
+    <div class="sh"><svg class="ic"><use href="#bowl"/></svg><div><small>MENU</small><h2>看板メニュー</h2></div></div>
+    <div class="menu-grid">
+     
+     <div class="menu-card">
+      <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80" alt="特製濃厚鶏白湯ラーメン">
+      <div class="menu-card-body">
+       <div class="menu-card-title">
+        <span>特製濃厚鶏白湯</span>
+        <span class="menu-card-price">¥1,250</span>
+       </div>
+       <div class="menu-card-desc">当店一番人気！味玉・のり・チャーシュー増量・特製穂先メンマが乗った極上のフルスペック一杯。</div>
+      </div>
+     </div>
+
+     <div class="menu-card">
+      <img src="https://images.unsplash.com/photo-1591814468924-caf88d1232e1?auto=format&fit=crop&w=600&q=80" alt="芳醇煮干し醤油ラーメン">
+      <div class="menu-card-body">
+       <div class="menu-card-title">
+        <span>芳醇煮干し醤油</span>
+        <span class="menu-card-price">¥980</span>
+       </div>
+       <div class="menu-card-desc">厳選した3種の煮干しと生醤油をブレンド。すっきりしながらも余韻が残る澄んだスープ。</div>
+      </div>
+     </div>
+
+     <div class="menu-card">
+      <img src="https://images.unsplash.com/photo-1552611052-33e04de081de?auto=format&fit=crop&w=600&q=80" alt="限定 煮干し和え玉">
+      <div class="menu-card-body">
+       <div class="menu-card-title">
+        <span>和え玉（替玉＋タレ）</span>
+        <span class="menu-card-price">¥300</span>
+       </div>
+       <div class="menu-card-desc">タレと魚粉、角切りチャーシューが乗った替え玉。そのまま油そば風に混ぜて食べるのが通。</div>
+      </div>
+     </div>
+
+    </div>
+   </section>
+
+   <!-- 行列攻略ガイド -->
+   <section style="padding:20px 0; border-top:1px solid var(--line);">
+    <div class="sh"><svg class="ic"><use href="#clock"/></svg><div><small>WAIT TIME GUIDE</small><h2>行列の傾向・ねらい目時間帯</h2></div></div>
+    <p style="font-size:12px; color:var(--muted); margin-bottom:10px;">※曜日や天候によって変動します。並び方のルールとして食券は入店直前に購入するスタイルです。</p>
+    
+    <table class="guide-table">
+     <thead>
+      <tr>
+       <th>時間帯</th>
+       <th>平均待ち時間</th>
+       <th>混雑度</th>
+      </tr>
+     </thead>
+     <tbody>
+      <tr>
+       <td>平日の開店前（10:30〜11:00）</td>
+       <td>約 20〜30分</td>
+       <td><span class="guide-badge badge-smooth">狙い目</span></td>
+      </tr>
+      <tr>
+       <td>平日ランチピーク（12:00〜13:30）</td>
+       <td>約 50〜70分</td>
+       <td><span class="guide-badge badge-busy">ピーク混雑</span></td>
+      </tr>
+      <tr>
+       <td>平日ディナー（18:00〜19:30）</td>
+       <td>約 30〜45分</td>
+       <td><span class="guide-badge badge-busy">標準行列</span></td>
+      </tr>
+      <tr>
+       <td>土日祝（終日）</td>
+       <td>約 60〜90分</td>
+       <td><span class="guide-badge badge-busy">大行列</span></td>
+      </tr>
+     </tbody>
+    </table>
+   </section>
+
+   <!-- 最新口コミ・レビュー -->
+   <section style="padding:20px 0; border-top:1px solid var(--line);">
+    <div class="sh"><svg class="ic"><use href="#cam"/></svg><div><small>REVIEWS</small><h2>最新の口コミ・評価</h2></div></div>
+    
+    <div class="review-item">
+     <div class="review-header">
+      <div class="review-user">
+       <div class="review-avatar">ラーメン太郎</div>
+       <div>ラーメン太郎 <span class="review-date">（2026年10月中旬訪問）</span></div>
+      </div>
+      <div class="review-stars">★★★★★ 5.0</div>
+     </div>
+     <div class="review-text">
+      雨の日の平日に訪問。40分ほど並んで店内へ。スープの一口目の衝撃がすごいです！濃厚なのに重すぎず、鶏の旨味が口いっぱいに広がります。和え玉も絶対に注文することをお勧めします。
+     </div>
+    </div>
+
+    <div class="review-item">
+     <div class="review-header">
+      <div class="review-user">
+       <div class="review-avatar">麺巡り女子</div>
+       <div>麺巡り女子 <span class="review-date">（2026年10月上旬訪問）</span></div>
+      </div>
+      <div class="review-stars">★★★★☆ 4.5</div>
+     </div>
+     <div class="review-text">
+      噂通りの行列店でした！女性ひとりでも入りやすい綺麗な店内。スープがクリーミーでポタージュのよう。チャーシューも柔らかくて絶品でした。
+     </div>
+    </div>
+
+    <div style="margin-top:16px;">
+     <a href="kutikomi.html" class="btn red" style="width:100%;"><svg class="ic"><use href="#cam"/></svg> このお店の口コミを投稿する</a>
+    </div>
+   </section>
+
+  </div>
+
+  <!-- 右サイドバー: 店舗概要＆アクセスマップ -->
+  <aside class="sidebar">
+   
+   <div class="sidebar-box">
+    <h3>店舗基本情報</h3>
+    <table class="info-table">
+     <tr>
+      <th>店名</th>
+      <td>麺処 蛇の目（じゃのめ）</td>
+     </tr>
+     <tr>
+      <th>住所</th>
+      <td>東京都千代田区神田錦町3-12-8</td>
+     </tr>
+     <tr>
+      <th>アクセス</th>
+      <td>東京メトロ半蔵門線「神保町駅」A9出口より徒歩4分<br>JR「神田駅」西口より徒歩8分</td>
+     </tr>
+     <tr>
+      <th>営業時間</th>
+      <td>11:00～15:00 / 17:30～21:00<br><small style="color:var(--muted)">※スープ無くなり次第終了</small></td>
+     </tr>
+     <tr>
+      <th>定休日</th>
+      <td>月曜日（祝日の場合は翌火曜休）</td>
+     </tr>
+     <tr>
+      <th>席数</th>
+      <td>12席（カウンターのみ）</td>
+     </tr>
+     <tr>
+      <th>決済方法</th>
+      <td>食券制（現金、PayPay、交通系IC対応）</td>
+     </tr>
+    </table>
+
+    <div class="map-placeholder">
+     <svg class="ic" style="width:32px;height:32px;color:var(--red);"><use href="#pin"/></svg>
+     <span>Google Map プレースホルダー</span>
+     <small style="font-size:10px;">東京都千代田区神田錦町3-12-8</small>
+    </div>
+   </div>
+
+   <div class="sidebar-box" style="background:var(--alt);">
+    <h3>関連する人気特集</h3>
+    <ul style="font-size:12px; line-height:2.0;">
+     <li><a href="tokusyuu.html" style="color:var(--red);">・ 一度は食べたい全国の名店特集</a></li>
+     <li><a href="tonkotu.html">・ 濃厚鶏白湯＆豚骨の名店まとめ</a></li>
+     <li><a href="rannkinngu.html">・ 東京都のラーメンランキング TOP20</a></li>
+    </ul>
+   </div>
+
+  </aside>
+
+ </div>
+</div>
+</main>
+
+<!-- フッター -->
+<footer>
+ <div class="wrap">
+  <div class="ft">
+   <div>
+    <a class="logo" href="index.html">
+     <svg class="ic" style="color:#fff"><use href="#bowl"/></svg>
+     <b style="font-size:17px">全国ラーメンランキング <svg class="ic c"><use href="#crown"/></svg></b>
+    </a>
+    <p class="about">全国のラーメン店と、ラーメンを愛する人をつなぐ情報サイト。<br>今日の一杯から、旅先で出会う特別な一杯まで。<br>ラーメンの楽しさとおいしさを、全国へ。</p>
+   </div>
+   <div>
+    <h4>サイトメニュー</h4>
+    <ul>
+     <li><a href="index.html#ranking">全国ランキング</a></li>
+     <li><a href="area.html">エリアから探す</a></li>
+     <li><a href="index.html#type">ラーメンの種類</a></li>
+     <li><a href="tokusyuu.html">ラーメン特集</a></li>
+    </ul>
+   </div>
+   <div>
+    <h4>その他</h4>
+    <ul>
+     <li><a href="kutikomi.html">口コミ・レビュー</a></li>
+     <li><a href="#">掲載店舗について</a></li>
+     <li><a href="#">お問い合わせ</a></li>
+     <li><a href="#">プライバシーポリシー</a></li>
+    </ul>
+   </div>
+   <div class="sns">
+    <a href="#" aria-label="X">𝕏</a>
+    <a href="#" aria-label="Instagram">◎</a>
+    <a href="#" aria-label="YouTube">▶</a>
+    <button id="top" aria-label="ページ上部へ">︿</button>
+   </div>
+  </div>
+  <p class="copy">© 全国ラーメンランキング. All Right Reserved.</p>
+ </div>
+</footer>
+
+<div id="toast"></div>
+
+<script>
+(function(){
+ var $=function(s){return document.querySelector(s)};
+ var nav=$('#nav'),mb=$('#menuBtn');
+ if (mb && nav) {
+  mb.addEventListener('click',function(){var o=nav.classList.toggle('open');mb.setAttribute('aria-expanded',o)});
+  nav.addEventListener('click',function(e){if(e.target.tagName==='A'){nav.classList.remove('open');mb.setAttribute('aria-expanded',false)}});
+ }
+ var t=$('#toast'),tm;
+ function toast(m){if(!t)return;t.textContent=m;t.classList.add('on');clearTimeout(tm);tm=setTimeout(function(){t.classList.remove('on')},2200)}
+ document.querySelectorAll('[data-toast]').forEach(function(b){b.addEventListener('click',function(){toast(b.dataset.toast)})});
+ var topBtn = $('#top');
+ if (topBtn) {
+  topBtn.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+ }
+})();
+</script>
+</body>
+</html>

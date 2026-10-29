@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ラーメンの種類から探す - 全国ラーメンランキング</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700;900&display=swap">
+<style>
+/* 種類検索ページ固有の追加スタイル */
+.breadcrumb {
+  padding: 12px 0;
+  font-size: 11px;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+}
+.breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.breadcrumb li::after {
+  content: "›";
+  margin-left: 6px;
+  color: var(--muted);
+}
+.breadcrumb li:last-child::after {
+  content: "";
+}
+.breadcrumb a:hover {
+  color: var(--red);
+}
+
+/* ページヒーロー */
+.page-hero {
+  background: linear-gradient(135deg, var(--dark) 0%, #2c1a14 100%);
+  color: #fff;
+  padding: 32px 0 36px;
+  border-bottom: 3px solid var(--red);
+}
+.page-hero h1 {
+  font: 900 28px/1.3 "Noto Serif JP", serif;
+  letter-spacing: .05em;
+}
+.page-hero h1 span {
+  color: var(--gold);
+}
+.page-hero p {
+  font-size: 12px;
+  color: #d8c9bd;
+  margin-top: 8px;
+  line-height: 1.8;
+  max-width: 640px;
+}
+
+/* メインコンテンツレイアウト */
+.type-container {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 28px;
+  padding: 30px 0 50px;
+}
+
+/* サイドバー・フィルター */
+.filter-sidebar {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 18px;
+  height: fit-content;
+  position: sticky;
+  top: calc(72px + env(safe-area-inset-top, 0px));
+}
+.filter-title {
+  font: 700 15px "Noto Serif JP", serif;
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+  border-bottom: 2px solid var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.filter-reset-btn {
+  font-size: 10px;
+  font-weight: normal;
+  color: var(--muted);
+  background: none;
+  border: 1px solid var(--line);
+  padding: 2px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.filter-reset-btn:hover {
+  color: var(--red);
+  border-color: var(--red);
+}
+.filter-group {
+  margin-bottom: 18px;
+}
+.filter-group:last-child {
+  margin-bottom: 0;
+}
+.filter-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  display: block;
+}
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.tag-btn {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 14px;
+  background: var(--alt);
+  border: 1px solid var(--line);
+  color: var(--text);
+  cursor: pointer;
+  transition: all .2s;
+  user-select: none;
+}
+.tag-btn:hover, .tag-btn.active {
+  background: var(--red);
+  color: #fff;
+  border-color: var(--red);
+}
+
+/* メインギャラリー＆リスト */
+.category-section-title {
+  font: 700 20px "Noto Serif JP", serif;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.category-section-title::before {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 18px;
+  background: var(--gold);
+  border-radius: 2px;
+}
+
+/* カテゴリーグリッド */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 40px;
+}
+.cat-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 14px;
+  cursor: pointer;
+  transition: all .2s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+.cat-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--gold);
+  box-shadow: 0 6px 16px rgba(0,0,0,.08);
+}
+.cat-card.active {
+  border: 2px solid var(--red);
+  background: var(--alt);
+}
+.cat-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 6px;
+}
+.cat-card h3 {
+  font: 700 15px "Noto Serif JP", serif;
+  color: var(--text);
+}
+.cat-badge {
+  font-size: 9.5px;
+  background: var(--gold);
+  color: var(--dark);
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-weight: 700;
+}
+.cat-card p {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+.cat-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: auto;
+}
+.cat-tag-mini {
+  font-size: 9.5px;
+  color: var(--muted);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  padding: 1px 6px;
+  border-radius: 2px;
+}
+
+/* 店舗結果エリア */
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+.result-count {
+  font-size: 13px;
+  font-weight: 700;
+}
+.result-count span {
+  color: var(--red);
+  font-size: 18px;
+  margin: 0 2px;
+}
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.shop-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform .2s, box-shadow .2s;
+}
+.shop-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,.1);
+}
+.shop-img-wrap {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  background: #3a312c;
+  overflow: hidden;
+}
+.shop-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .3s;
+}
+.shop-card:hover .shop-img-wrap img {
+  transform: scale(1.05);
+}
+.shop-type-tag {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(0,0,0,0.75);
+  color: #fff;
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 2px;
+  backdrop-filter: blur(2px);
+}
+.shop-body {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+.shop-title {
+  font: 700 14px/1.4 "Noto Serif JP", serif;
+  margin-bottom: 4px;
+  color: var(--text);
+}
+.shop-loc {
+  font-size: 10.5px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.shop-desc {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.shop-meta {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px dashed var(--line);
+}
+.shop-score {
+  color: var(--gold);
+  font-weight: 700;
+  font-size: 12px;
+}
+
+/* 種類解説アコーディオン */
+.guide-section {
+  background: var(--alt);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 24px;
+  margin-top: 50px;
+}
+.guide-section h2 {
+  font: 700 18px "Noto Serif JP", serif;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.accordion-item {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+.accordion-header {
+  width: 100%;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  color: var(--text);
+  font: 700 13px "Noto Sans JP", sans-serif;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+.accordion-header:hover {
+  background: rgba(0,0,0,0.02);
+}
+.accordion-icon {
+  transition: transform .2s;
+  color: var(--muted);
+}
+.accordion-item.open .accordion-icon {
+  transform: rotate(180deg);
+}
+.accordion-content {
+  padding: 0 16px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .3s ease, padding .3s ease;
+  font-size: 11.5px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+.accordion-item.open .accordion-content {
+  padding: 12px 16px 16px;
+  max-height: 200px;
+  border-top: 1px solid var(--line);
+}
+
+/* モバイル調整 */
+@media (max-width: 900px) {
+  .type-container {
+    grid-template-columns: 1fr;
+  }
+  .filter-sidebar {
+    position: static;
+  }
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .shop-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 560px) {
+  .category-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- SVG シンボル定義 (index.htmlと共有) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="crown" viewBox="0 0 24 24"><path d="M2 19h20l1-11-6 5-5-9-5 9-6-5z" fill="currentColor"/></symbol>
+<symbol id="bowl" viewBox="0 0 40 40"><path d="M4 18h32a16 16 0 0 1-32 0z" fill="currentColor"/><path d="M12 14c4-3 10-3 16 0M14 9l16-5M13 11l17-5" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/></symbol>
+<symbol id="pin" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" fill="currentColor"/></symbol>
+<symbol id="srch" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15 15l6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+<symbol id="chev" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="arr" viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="star" viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7.2-6.3-3.7-6.3 3.7 1.6-7.2L2 9.6 9 9z" fill="currentColor"/></symbol>
+<symbol id="menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="filter" viewBox="0 0 24 24"><path d="M3 6h18M6 12h12M10 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+</svg>
+
+<header>
+ <div class="wrap hd">
+  <a class="logo" href="index.html">
+   <svg class="ic"><use href="#bowl"/></svg>
+   <span><b>全国<i>ラーメン</i>ランキング <svg class="ic c"><use href="#crown"/></svg></b><small>日本全国のうまいラーメンを、ランキングで紹介</small></span>
+  </a>
+  <nav id="nav">
+   <a href="index.html">ホーム</a>
+   <a href="index.html#ranking">ランキング</a>
+   <a href="area.html">エリアから探す</a>
+   <a href="type.html" style="color:var(--red); font-weight:700;">ラーメンの種類</a>
+   <a href="tokusyuu.html">ラーメン特集</a>
+   <a href="kutikomi.html">口コミ・レビュー</a>
+  </nav>
+  <span class="sp"></span>
+  <a class="hbtn" href="index.html#search" aria-label="検索"><svg class="ic"><use href="#srch"/></svg></a>
+  <button class="hbtn" id="menuBtn" aria-label="メニュー" aria-expanded="false"><svg class="ic"><use href="#menu"/></svg></button>
+ </div>
+</header>
+
+<div class="breadcrumb">
+  <div class="wrap">
+    <ol>
+      <li><a href="index.html">ホーム</a></li>
+      <li>ラーメンの種類から探す</li>
+    </ol>
+  </div>
+</div>
+
+<div class="page-hero">
+  <div class="wrap">
+    <h1>スープ・スタイルから探す<span>最高の一杯</span></h1>
+    <p>王道の醤油・豚骨から、話題の鶏白湯・二郎系・ご当地まで。スープの出汁や麺のタイプ、特徴的なタグから直感的にあなた好みのお店を見つけられます。</p>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="type-container">
+    
+    <!-- サイドバー：条件絞り込み -->
+    <aside class="filter-sidebar">
+      <div class="filter-title">
+        <span><svg class="ic"><use href="#filter"/></svg> 条件で絞り込む</span>
+        <button class="filter-reset-btn" id="resetBtn">リセット</button>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">スープ・味の濃度</span>
+        <div class="tag-cloud" id="densityTags">
+          <button class="tag-btn" data-filter="こってり">こってり</button>
+          <button class="tag-btn" data-filter="あっさり">あっさり</button>
+          <button class="tag-btn" data-filter="ドロ系">ドロ系</button>
+          <button class="tag-btn" data-filter="清湯">清湯</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">麺の太さ・形状</span>
+        <div class="tag-cloud" id="noodleTags">
+          <button class="tag-btn" data-filter="細麺">細麺</button>
+          <button class="tag-btn" data-filter="中太麺">中太麺</button>
+          <button class="tag-btn" data-filter="極太麺">極太麺</button>
+          <button class="tag-btn" data-filter="ちぢれ麺">ちぢれ麺</button>
+          <button class="tag-btn" data-filter="ストレート">ストレート</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">こだわり・特徴</span>
+        <div class="tag-cloud" id="featureTags">
+          <button class="tag-btn" data-filter="魚介出汁">魚介出汁</button>
+          <button class="tag-btn" data-filter="無化調">無化調</button>
+          <button class="tag-btn" data-filter="自家製麺">自家製麺</button>
+          <button class="tag-btn" data-filter="シビカラ">シビカラ</button>
+          <button class="tag-btn" data-filter="汁なし">汁なし</button>
+          <button class="tag-btn" data-filter="デカ盛り">デカ盛り</button>
+          <button class="tag-btn" data-filter="深夜営業">深夜営業</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- メインエリア -->
+    <section>
+      <div class="category-section-title">ラーメンの主なカテゴリー（9種類）</div>
+      
+      <!-- 種類カテゴリーカード -->
+      <div class="category-grid" id="catGrid">
+        <div class="cat-card active" data-cat="all">
+          <div class="cat-card-header">
+            <h3>すべて表示</h3>
+            <span class="cat-badge">ALL</span>
+          </div>
+          <p>全ジャンルのラーメン店から探索します。</p>
+        </div>
+
+        <div class="cat-card" data-cat="豚骨ラーメン">
+          <div class="cat-card-header">
+            <h3>豚骨ラーメン</h3>
+            <span class="cat-badge">王道</span>
+          </div>
+          <p>長時間炊き出した濃厚クリーミーな白湯スープ。細麺・家系・博多風など。</p>
+          <div class="cat-tags">
+            <span class="cat-tag-mini">こってり</span>
+            <span class="cat-tag-mini">細麺</span>
+          </div>
+        </div>
+
+        <div class="cat-card" data-cat="醤油ラーメン">
+          <div class="cat-card-header">
+            <h3>醤油ラーメン</h3>
+            <span class="cat-badge">定番</span>
+          </div>
+          <p>鶏ガラや魚介の旨味と醤油の芳醇な香り。シンプルながら奥深い日本人の原点。</p>
+          <div class="cat-tags">
+            <span class="cat-tag-mini">あっさり</span>
+            <span class="cat-tag-mini">清湯</span>
+          </div>
+        </div>
+
+        <div class="cat-card" data-cat="味噌ラーメン">
+          <div class="cat-card-header">
+            <h3>味噌ラーメン</h3>
+            <span class="cat-badge">芳醇</span>
+          </div>
+          <p>コク深い味噌スープに炒め野菜やニンニクの風味が広がる力強い味わい。</p>
+          <div class="cat-tags">
+            <span class="cat-tag-mini">ちぢれ麺</span>
+            <span class="cat-tag-mini">こってり</span>
+          </div>
+        </div>
+
+        <div class="cat-card" data-cat="塩ラーメン">
+          <div class="cat-card-header">
+            <h3>塩ラーメン</h3>
+            <span class="cat-badge">繊細</span>
+          </div>
+          <p>透明度の高いスープに素材の出汁（鶏・貝・昆布など）の旨味が凝縮した一杯。</p>
+          <div class="cat-tags">
+            <span class="cat-tag-mini">あっさり</span>
+            <span class="cat-tag-mini">無化調</span>
+          </div>
+        </div>
+
+        <div class="cat-card" data-cat="鶏白湯ラーメン">
+          <div class="cat-card-header">
+            <h3>鶏白湯ラーメン</h3>
+            <span class="cat-badge">人気急上昇</span>
+          </div>
+          <p>丸鶏を丸ごと強火で煮込んだポタージュのような滑らかで濃厚な鶏の旨味。</p>
+          <div class="cat-tags">
+            <span class="cat-tag-mini">ドロ系</span>
+            <span class="cat-tag-mini">ストレート</span>
+          </div>
+        </div>
+
+        <div class="cat-card" data-cat="担々麺・麻婆麺">
+          <div class="cat-card-header">
+            <h3>担々麺・麻婆麺</h3>
+            <span class="cat-badge">シビカラ</span>
+          </div>
+          <p>胡麻の香ばしさと花椒の痺れ、自家製辣油の辛さが癖になる旨辛系スープ。</p>
+          <div class="cat-tags">
+            <span class="cat-tag-mini">シビカラ</span>
+            <span class="cat-tag-mini">中太麺</span>
+          </div>
+        </div>
+
+        <div class="cat-card" data-cat="つけ麺・汁なし">
+          <div class="cat-card-header">
+            <h3>つけ麺・汁なし</h3>
+            <span class="cat-badge">太麺派</span>
+          </div>
+          <p>モチモチ食感の極太麺を濃厚な魚介豚骨スープやタレで楽しむスタイル。</p>
+          <div class="cat-tags">
+            <span class="cat-tag-mini">極太麺</span>
+            <span class="cat-tag-mini">汁なし</span>
+          </div>
+        </div>
+
+        <div class="cat-card" data-cat="二郎系・インスパイア">
+          <div class="cat-card-header">
+            <h3>二郎系・ガッツリ</h3>
+            <span class="cat-badge">極太・大盛</span>
+          </div>
+          <p>山盛りヤサイ・厚切りチャーシュー・ニンニク・アブラにオーション極太麺。</p>
+          <div class="cat-tags">
+            <span class="cat-tag-mini">デカ盛り</span>
+            <span class="cat-tag-mini">極太麺</span>
+          </div>
+        </div>
+
+        <div class="cat-card" data-cat="ご当地・個性派">
+          <div class="cat-card-header">
+            <h3>ご当地・個性派</h3>
+            <span class="cat-badge">地域限定</span>
+          </div>
+          <p>尾道、高山、勝浦タンタンメン、竹岡式など日本全国の独特なご当地麺。</p>
+          <div class="cat-tags">
+            <span class="cat-tag-mini">魚介出汁</span>
+            <span class="cat-tag-mini">自家製麺</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 店舗検索結果 -->
+      <div class="result-header">
+        <div class="result-count">該当するラーメン店: <span id="shopCount">0</span> 件</div>
+        <div style="font-size:11px; color:var(--muted);" id="currentFilterText">選択中: すべて</div>
+      </div>
+
+      <div class="shop-grid" id="shopGrid">
+        <!-- JSで動的生成されます -->
+      </div>
+
+      <!-- 種類解説ガイド -->
+      <div class="guide-section">
+        <h2><svg class="ic"><use href="#bowl"/></svg> ラーメンのスープ・出汁の基礎知識</h2>
+        <p style="font-size:11.5px; color:var(--muted); margin-bottom:14px;">自分好みの味を見つけるためのスープ選びのポイントと歴史の解説です。</p>
+
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span>「清湯（チンタン）」と「白湯（パイタン）」の違いとは？</span>
+            <span class="accordion-icon">▼</span>
+          </button>
+          <div class="accordion-content">
+            スープの炊き出し方の違いです。「清湯」は沸騰させずに弱火で静かに煮出すことで濁りのない透き通ったスープに仕上げます（醤油・塩ラーメンに多い）。一方「白湯」は強火でグラグラと煮立たせることで骨の脂分と水分が乳化し、白く濁った濃厚なスープになります（豚骨・鶏白湯）。
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span>Wスープ（ダブルスープ）の魅力</span>
+            <span class="accordion-icon">▼</span>
+          </button>
+          <div class="accordion-content">
+            動物系出汁（豚骨や鶏ガラ）の持つ芳醇なコクと、魚介系出汁（鰹節・煮干し・昆布）の持つ繊細な旨味成分（イノシン酸×グルタミン酸）を別々に抽出して合わせる技法です。合わせることで旨味が飛躍的に高まる「相乗効果」が得られます。
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span>麺の太さとスープの相性の黄金比</span>
+            <span class="accordion-icon">▼</span>
+          </button>
+          <div class="accordion-content">
+            一般的に、あっさりした清湯スープにはスープを持ち上げやすい「細ストレート麺」や「ちぢれ麺」、濃厚なドロ系スープやつけ麺にはスープに負けない存在感の「中太麺〜極太麺」が相性抜群とされています。
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </div>
+</main>
+
+<footer>
+ <div class="wrap">
+  <div class="ft">
+   <div><a class="logo" href="index.html"><svg class="ic" style="color:#fff"><use href="#bowl"/></svg><b style="font-size:17px">全国ラーメンランキング <svg class="ic c"><use href="#crown"/></svg></b></a>
+    <p class="about">全国のラーメン店と、ラーメンを愛する人をつなぐ情報サイト。<br>今日の一杯から、旅先で出会う特別な一杯まで。<br>ラーメンの楽しさとおいしさを、全国へ。</p></div>
+   <div><h4>サイトメニュー</h4><ul><li><a href="index.html#ranking">全国ランキング</a></li><li><a href="area.html">エリアから探す</a></li><li><a href="type.html">ラーメンの種類</a></li><li><a href="tokusyuu.html">ラーメン特集</a></li></ul></div>
+   <div><h4>その他</h4><ul><li><a href="kutikomi.html">口コミ・レビュー</a></li><li><a href="#">掲載店舗について</a></li><li><a href="#">お問い合わせ</a></li><li><a href="#">プライバシーポリシー</a></li></ul></div>
+   <div class="sns"><a href="#" aria-label="X">𝕏</a><a href="#" aria-label="Instagram">◎</a><a href="#" aria-label="YouTube">▶</a><button id="top" aria-label="ページ上部へ">︿</button></div>
+  </div>
+  <p class="copy">© 全国ラーメンランキング. All Right Reserved.</p>
+ </div>
+</footer>
+
+<div id="toast"></div>
+
+<script>
+// ダミー店舗データ（カテゴリ・特徴タグ付）
+const mockShops = [
+  {
+    id: 1,
+    name: "一閒（いっかん）",
+    category: "豚骨ラーメン",
+    location: "東京・千代田区",
+    rating: 4.5,
+    reviews: 2341,
+    img: "img/b.jpg",
+    desc: "極細ストレート麺と濃厚ながらクセのない博多風豚骨スープ。自家製チャーシューが絶品。",
+    tags: ["こってり", "細麺", "ストレート", "深夜営業"]
+  },
+  {
+    id: 2,
+    name: "らーめん ふくの屋",
+    category: "味噌ラーメン",
+    location: "北海道・札幌市",
+    rating: 4.4,
+    reviews: 1892,
+    img: "img/c.jpg",
+    desc: "本場札幌のラードで蓋をした熱々濃厚味噌。黄色い中太ちぢれ麺との相性が最高。",
+    tags: ["こってり", "中太麺", "ちぢれ麺"]
+  },
+  {
+    id: 3,
+    name: "麺や いちのはな",
+    category: "醤油ラーメン",
+    location: "東京・新宿区",
+    rating: 4.3,
+    reviews: 1756,
+    img: "img/d.jpg",
+    desc: "比内地鶏と厳選した生醤油をあわせた芳醇な極上清湯スープ。完全無化調こだわり麺。",
+    tags: ["あっさり", "清湯", "無化調", "自家製麺"]
+  },
+  {
+    id: 4,
+    name: "極煮干し 麺屋 雫",
+    category: "ご当地・個性派",
+    location: "青森・青森市",
+    rating: 4.6,
+    reviews: 980,
+    img: "img/e.jpg",
+    desc: "ガツンと効いた煮干しの旨味とコク。煮干し好きにはたまらない青森ご当地の真骨頂。",
+    tags: ["魚介出汁", "あっさり", "ちぢれ麺"]
+  },
+  {
+    id: 5,
+    name: "濃厚鶏白湯 鶏の極",
+    category: "鶏白湯ラーメン",
+    location: "大阪・梅田",
+    rating: 4.2,
+    reviews: 1120,
+    img: "img/f.jpg",
+    desc: "まるでポタージュのようにクリーミーな濃厚鶏白湯。エスプーマ仕立ての泡が麺に絡む。",
+    tags: ["ドロ系", "ストレート", "自家製麺"]
+  },
+  {
+    id: 6,
+    name: "四川担々麺 鳳凰",
+    category: "担々麺・麻婆麺",
+    location: "愛知・名古屋市",
+    rating: 4.5,
+    reviews: 840,
+    img: "img/g.jpg",
+    desc: "自家製芝麻醬の豊かな風味と四川花椒のシビれる辛さ。残ったスープに追い飯が鉄板。",
+    tags: ["シビカラ", "中太麺", "こってり"]
+  },
+  {
+    id: 7,
+    name: "麺処 荒武者",
+    category: "二郎系・インスパイア",
+    location: "東京・世田谷区",
+    rating: 4.1,
+    reviews: 1530,
+    img: "img/h.jpg",
+    desc: "極太ワシワシ麺にゴロゴロの豚ブロック、背脂ニンニク。圧倒的満足感のメガ盛り系。",
+    tags: ["デカ盛り", "極太麺", "こってり", "ドロ系"]
+  },
+  {
+    id: 8,
+    name: "つけ麺 潮風",
+    category: "つけ麺・汁なし",
+    location: "神奈川・横浜市",
+    rating: 4.4,
+    reviews: 1670,
+    img: "img/i.jpg",
+    desc: "濃厚豚骨魚介の和風タレに自家製極太全粒粉麺をつけて食べる絶品つけ麺。",
+    tags: ["汁なし", "極太麺", "魚介出汁", "自家製麺"]
+  },
+  {
+    id: 9,
+    name: "貝出汁 潮香（しおか）",
+    category: "塩ラーメン",
+    location: "京都・中京区",
+    rating: 4.7,
+    reviews: 910,
+    img: "img/j.jpg",
+    desc: "蛤と金目鯛の上質な出汁をブレンドした透き通るスープ。後味さっぱりの贅沢な一杯。",
+    tags: ["あっさり", "清湯", "無化調", "魚介出汁"]
+  }
+];
+
+// 状態管理
+let selectedCategory = 'all';
+let selectedTags = new Set();
+
+document.addEventListener('DOMContentLoaded', () => {
+  // ナビゲーションレスポンシブ
+  const nav = document.getElementById('nav');
+  const mb = document.getElementById('menuBtn');
+  mb.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    mb.setAttribute('aria-expanded', open);
+  });
+
+  // URLパラメータのチェック (例: type.html?cat=豚骨ラーメン)
+  const urlParams = new URLSearchParams(window.location.search);
+  const catParam = urlParams.get('cat');
+  if(catParam) {
+    selectedCategory = catParam;
+  }
+
+  initCategoryCards();
+  initTagButtons();
+  initAccordion();
+  renderShops();
+
+  // トップへ戻る
+  document.getElementById('top').addEventListener('click', () => {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+
+  // リセットボタン
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    selectedCategory = 'all';
+    selectedTags.clear();
+    updateCategoryUI();
+    updateTagUI();
+    renderShops();
+    showToast('検索条件をリセットしました');
+  });
+});
+
+// カテゴリーカード初期化
+function initCategoryCards() {
+  const cards = document.querySelectorAll('.cat-card');
+  cards.forEach(card => {
+    const cat = card.dataset.cat;
+    if(cat === selectedCategory) card.classList.add('active');
+    else card.classList.remove('active');
+
+    card.addEventListener('click', () => {
+      cards.forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      selectedCategory = cat;
+      renderShops();
+    });
+  });
+}
+
+// UI更新
+function updateCategoryUI() {
+  document.querySelectorAll('.cat-card').forEach(card => {
+    if(card.dataset.cat === selectedCategory) card.classList.add('active');
+    else card.classList.remove('active');
+  });
+}
+
+// タグボタン初期化
+function initTagButtons() {
+  const tagBtns = document.querySelectorAll('.tag-btn');
+  tagBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tag = btn.dataset.filter;
+      if(selectedTags.has(tag)) {
+        selectedTags.delete(tag);
+        btn.classList.remove('active');
+      } else {
+        selectedTags.add(tag);
+        btn.classList.add('active');
+      }
+      renderShops();
+    });
+  });
+}
+
+function updateTagUI() {
+  document.querySelectorAll('.tag-btn').forEach(btn => {
+    if(selectedTags.has(btn.dataset.filter)) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+}
+
+// 店舗レンダリング（フィルタリング適用）
+function renderShops() {
+  const grid = document.getElementById('shopGrid');
+  const countEl = document.getElementById('shopCount');
+  const filterTextEl = document.getElementById('currentFilterText');
+
+  const filtered = mockShops.filter(shop => {
+    // カテゴリーチェック
+    const matchCat = (selectedCategory === 'all') || (shop.category === selectedCategory);
+    
+    // タグチェック（選択されたタグすべてを含んでいるか）
+    let matchTags = true;
+    if(selectedTags.size > 0) {
+      matchTags = Array.from(selectedTags).every(t => shop.tags.includes(t));
+    }
+
+    return matchCat && matchTags;
+  });
+
+  // カウント更新
+  countEl.textContent = filtered.length;
+
+  // 条件テキスト作成
+  let filterText = [];
+  if(selectedCategory !== 'all') filterText.push(`種類: ${selectedCategory}`);
+  if(selectedTags.size > 0) filterText.push(`タグ: ${Array.from(selectedTags).join('・')}`);
+  filterTextEl.textContent = filterText.length > 0 ? `選択中: ${filterText.join(' / ')}` : '選択中: すべて';
+
+  if(filtered.length === 0) {
+    grid.innerHTML = `
+      <div style="grid-column: 1/-1; text-align: center; padding: 40px 10px; color: var(--muted); background: var(--card); border: 1px dashed var(--line); border-radius: 4px;">
+        <p style="font-size: 14px; font-weight:700; margin-bottom:6px;">条件に該当するラーメン店が見つかりませんでした</p>
+        <p style="font-size: 11px;">絞り込み条件（タグなど）を変更してお試しください。</p>
+      </div>
+    `;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(shop => `
+    <div class="shop-card">
+      <div class="shop-img-wrap">
+        <img src="${shop.img}" alt="${shop.name}" onerror="this.src='https://placehold.co/400x300/3a312c/ffffff?text=Ramen'">
+        <span class="shop-type-tag">${shop.category}</span>
+      </div>
+      <div class="shop-body">
+        <div class="shop-title">${shop.name}</div>
+        <div class="shop-loc">
+          <svg class="ic" style="width:12px;height:12px;"><use href="#pin"/></svg> ${shop.location}
+        </div>
+        <div class="shop-desc">${shop.desc}</div>
+        
+        <div class="cat-tags" style="margin-bottom: 10px;">
+          ${shop.tags.map(t => `<span class="cat-tag-mini">${t}</span>`).join('')}
+        </div>
+
+        <div class="shop-meta">
+          <span class="shop-score"><svg class="ic" style="width:12px;height:12px;"><use href="#star"/></svg> ${shop.rating} <small style="font-size:9.5px; color:var(--muted);">(${shop.reviews}件)</small></span>
+          <a href="#" class="btn red" style="padding:4px 10px; font-size:10.5px;" onclick="showToast('${shop.name}の詳細はデモです'); return false;">店舗詳細</a>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// アコーディオン動作
+function initAccordion() {
+  const headers = document.querySelectorAll('.accordion-header');
+  headers.forEach(header => {
+    header.addEventListener('click', () => {
+      const item = header.parentElement;
+      item.classList.toggle('open');
+    });
+  });
+}
+
+// トースト表示
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('on');
+  setTimeout(() => {
+    t.classList.remove('on');
+  }, 2200);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ラーメン特集 | 全国ラーメンランキング</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700;900&display=swap">
+<style>
+:root{--bg:#fff;--alt:#f6f2ec;--card:#fff;--text:#2a1f1a;--muted:#8a7a70;--line:#e8dfd6;--red:#c4161c;--gold:#e9b949;--dark:#161110;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b1614;--alt:#221c19;--card:#2a2320;--text:#f2e9e2;--muted:#b3a399;--line:#3a312c}}
+:root[data-theme="dark"]{--bg:#1b1614;--alt:#221c19;--card:#2a2320;--text:#f2e9e2;--muted:#b3a399;--line:#3a312c}
+html{scroll-behavior:smooth;scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:400 14px/1.7 "Noto Sans JP",sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:30}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%;height:auto}
+h1,h2,h3,h4,p,ul{margin:0}ul{padding:0;list-style:none}
+.ic{width:1.15em;height:1.15em;vertical-align:-.2em;flex:none}
+.wrap{max-width:1060px;margin:0 auto;padding:0 24px}
+.serif{font-family:"Noto Serif JP",serif}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* Header */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.hd{display:flex;align-items:center;gap:20px;height:60px}
+.logo{display:flex;align-items:center;gap:10px;color:var(--red)}
+.logo>.ic{width:40px;height:40px}
+.logo b{display:block;font:900 19px/1.2 "Noto Serif JP",serif;color:var(--text)}
+.logo b i{font-style:normal;color:var(--red)}
+.logo small{display:block;font-size:10px;color:var(--muted)}
+.logo .ic.c{color:var(--gold);width:20px;height:20px}
+nav{margin-left:auto;display:flex;gap:22px;font-size:11px;font-weight:500}
+nav a{transition:color .2s}
+nav a:hover,nav a.active{color:var(--red)}
+.hbtn{background:none;border:0;color:var(--text);cursor:pointer;padding:6px;font-size:20px;display:flex}
+#menuBtn{display:none}
+
+/* Breadcrumb */
+.breadcrumb{padding:12px 0;font-size:11px;color:var(--muted);border-bottom:1px solid var(--line);background:var(--alt)}
+.breadcrumb a{color:var(--text)}
+.breadcrumb a:hover{color:var(--red)}
+.breadcrumb span{margin:0 6px;color:var(--muted)}
+
+/* Hero Banner */
+.feat-hero{position:relative;background:var(--dark);color:#fff;padding:50px 0;overflow:hidden}
+.feat-hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 70% 50%, rgba(196,22,28,0.25), transparent 70%);pointer-events:none}
+.feat-hero-content{position:relative;z-index:2;max-width:680px}
+.feat-badge{display:inline-flex;align-items:center;gap:6px;background:var(--red);color:#fff;padding:4px 12px;font-size:11px;font-weight:700;border-radius:2px;letter-spacing:.08em;margin-bottom:14px}
+.feat-hero h1{font:900 36px/1.3 "Noto Serif JP",serif;letter-spacing:.06em;margin-bottom:12px}
+.feat-hero h1 span{color:var(--gold)}
+.feat-hero p{font-size:13px;color:#e8ddd3;line-height:1.8}
+
+/* Filters & Search */
+.filter-bar{position:sticky;top:calc(60px + env(safe-area-inset-top,0px));z-index:15;background:var(--bg);border-bottom:1px solid var(--line);padding:12px 0;box-shadow:0 4px 12px rgba(0,0,0,.03)}
+.filter-flex{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab-btn{background:var(--alt);border:1px solid var(--line);color:var(--text);padding:6px 14px;font-size:12px;font-weight:500;border-radius:20px;cursor:pointer;white-space:nowrap;transition:all .2s}
+.tab-btn:hover,.tab-btn.active{background:var(--red);color:#fff;border-color:var(--red)}
+.search-mini{display:flex;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:2px 10px;width:220px}
+.search-mini input{border:none;background:transparent;outline:none;font-size:12px;width:100%;color:var(--text)}
+.search-mini button{background:none;border:none;color:var(--muted);cursor:pointer;padding:4px}
+
+/* Feature Grid */
+.sec-title{display:flex;align-items:center;gap:10px;margin:32px 0 18px;padding-bottom:8px;border-bottom:2px solid var(--red)}
+.sec-title h2{font:700 20px/1.3 "Noto Serif JP",serif}
+.sec-title .ic{color:var(--red);width:24px;height:24px}
+
+.grid-featured{display:grid;grid-template-columns:1.5fr 1fr;gap:20px;margin-bottom:32px}
+.card-main{background:var(--card);border:1px solid var(--line);border-radius:4px;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.06);display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}
+.card-main:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.12)}
+.card-main-img{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#333}
+.card-main-img img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.card-main:hover .card-main-img img{transform:scale(1.04)}
+.card-tag{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.75);color:#fff;padding:3px 8px;font-size:10px;font-weight:700;border-radius:2px;backdrop-filter:blur(4px)}
+.card-main-body{padding:18px;display:flex;flex-direction:column;flex:1}
+.card-main-body h3{font:700 18px/1.4 "Noto Serif JP",serif;margin-bottom:8px}
+.card-main-body p{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:14px;flex:1}
+.card-meta{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+
+/* Article List Grid */
+.grid-articles{display:grid;grid-template-columns:repeat(3, 1fr);gap:20px;margin-bottom:40px}
+.article-card{background:var(--card);border:1px solid var(--line);border-radius:4px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05);display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}
+.article-card:hover{transform:translateY(-3px);box-shadow:0 6px 16px rgba(0,0,0,.1)}
+.article-thumb{position:relative;aspect-ratio:16/10;overflow:hidden;background:#444}
+.article-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.article-card:hover .article-thumb img{transform:scale(1.05)}
+.article-body{padding:14px;display:flex;flex-direction:column;flex:1}
+.article-body h3{font:700 14px/1.5 "Noto Serif JP",serif;margin-bottom:6px}
+.article-body p{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:12px;flex:1}
+
+/* Pickup List Section */
+.pickup-box{background:var(--alt);border-radius:6px;padding:24px;margin:32px 0 40px;border:1px solid var(--line)}
+.pickup-header{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.pickup-header h3{font:700 16px "Noto Serif JP",serif}
+.pickup-list{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.pickup-item{display:flex;align-items:center;gap:12px;background:var(--card);padding:10px 14px;border-radius:4px;border:1px solid var(--line);transition:border-color .2s;cursor:pointer}
+.pickup-item:hover{border-color:var(--red)}
+.pickup-item .num{font:900 16px/1 "Noto Serif JP",serif;color:var(--gold);width:20px}
+.pickup-item span{font-size:12px;font-weight:700;flex:1}
+
+/* Bookmark CTA */
+.bm-cta{background:linear-gradient(135deg, var(--dark) 0%, #2a1a17 100%);color:#fff;border-radius:6px;padding:28px 24px;text-align:center;margin-bottom:40px}
+.bm-cta h3{font:700 20px/1.4 "Noto Serif JP",serif;margin-bottom:8px;color:var(--gold)}
+.bm-cta p{font-size:12px;color:#d8c9bd;margin-bottom:18px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 20px;font:700 12px "Noto Sans JP",sans-serif;border:1px solid transparent;cursor:pointer;border-radius:3px;transition:all .2s}
+.btn.red{background:var(--red);color:#fff}.btn.red:hover{filter:brightness(1.12)}
+.btn.out{background:transparent;color:#fff;border-color:rgba(255,255,255,.5)}.btn.out:hover{background:rgba(255,255,255,.1)}
+
+/* Footer */
+footer{background:var(--dark);color:#e9ded5;padding:28px 0 22px;font-size:11px;margin-top:24px}
+footer .logo b{color:#fff}
+.ft{display:grid;grid-template-columns:1.4fr 1fr 1fr auto;gap:24px}
+.ft h4{margin:0 0 8px;font-size:11px;color:#fff}
+.ft li a{display:block;padding:2px 0;color:#cdbfb4}.ft li a:hover{color:var(--gold)}
+.ft .about{margin-top:12px;line-height:1.9}
+.sns{display:flex;gap:16px;align-items:center;font-size:18px}
+.sns a{display:flex;width:26px;height:26px;align-items:center;justify-content:center;font:700 14px sans-serif}
+#top{width:30px;height:30px;border-radius:50%;border:1px solid #888;background:none;color:#fff;cursor:pointer}
+.copy{margin-top:18px;text-align:right;font-size:10px;color:#a89a90}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);background:#2a1f1a;color:#fff;padding:10px 18px;border-radius:4px;font-size:12px;opacity:0;pointer-events:none;transition:.3s;z-index:40}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* Responsive */
+@media(max-width:900px){
+ nav{position:absolute;left:0;right:0;top:100%;background:var(--bg);flex-direction:column;gap:0;padding:6px 24px 14px;border-bottom:1px solid var(--line);display:none}
+ nav.open{display:flex}nav a{padding:10px 0;border-bottom:1px solid var(--line)}
+ #menuBtn{display:none}
+ .grid-featured{grid-template-columns:1fr}
+ .grid-articles{grid-template-columns:repeat(2,1fr)}
+ .pickup-list{grid-template-columns:1fr}
+ .ft{grid-template-columns:1fr 1fr}.copy{text-align:left}
+}
+@media(max-width:600px){
+ #menuBtn{display:flex}
+ .grid-articles{grid-template-columns:1fr}
+ .filter-flex{flex-direction:column;align-items:stretch}
+ .search-mini{width:100%}
+ .feat-hero h1{font-size:26px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="crown" viewBox="0 0 24 24"><path d="M2 19h20l1-11-6 5-5-9-5 9-6-5z" fill="currentColor"/></symbol>
+<symbol id="bowl" viewBox="0 0 40 40"><path d="M4 18h32a16 16 0 0 1-32 0z" fill="currentColor"/><path d="M12 14c4-3 10-3 16 0M14 9l16-5M13 11l17-5" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/></symbol>
+<symbol id="pin" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" fill="currentColor"/></symbol>
+<symbol id="srch" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15 15l6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+<symbol id="chev" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="arr" viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="star" viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7.2-6.3-3.7-6.3 3.7 1.6-7.2L2 9.6 9 9z" fill="currentColor"/></symbol>
+<symbol id="book" viewBox="0 0 24 24"><path d="M2 5h8a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H2zM22 5h-8a2 2 0 0 1 2 2v13a2 2 0 0 1 2-2h8z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+<symbol id="menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="heart" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="currentColor"/></symbol>
+</svg>
+
+<!-- Header -->
+<header>
+ <div class="wrap hd">
+  <a class="logo" href="index.html">
+   <svg class="ic"><use href="#bowl"/></svg>
+   <span><b>全国<i>ラーメン</i>ランキング <svg class="ic c"><use href="#crown"/></svg></b><small>日本全国のうまいラーメンを、ランキングで紹介</small></span>
+  </a>
+  <nav id="nav">
+   <a href="index.html">ホーム</a>
+   <a href="index.html#ranking">ランキング</a>
+   <a href="index.html#area">エリアから探す</a>
+   <a href="index.html#type">ラーメンの種類</a>
+   <a class="active" href="tokushu.html">ラーメン特集</a>
+   <a href="index.html#review">口コミ・レビュー</a>
+  </nav>
+  <button class="hbtn" id="menuBtn" aria-label="メニュー" aria-expanded="false"><svg class="ic"><use href="#menu"/></svg></button>
+ </div>
+</header>
+
+<!-- Breadcrumb -->
+<div class="breadcrumb">
+ <div class="wrap">
+  <a href="index.html">ホーム</a><span>&gt;</span><b>ラーメン特集</b>
+ </div>
+</div>
+
+<main>
+ <!-- Hero Banner -->
+ <section class="feat-hero">
+  <div class="wrap">
+   <div class="feat-hero-content">
+    <span class="feat-badge"><svg class="ic"><use href="#book"/></svg> SPECIAL FEATURE</span>
+    <h1>ラーメンの世界を、<br><span>もっと深く。</span></h1>
+    <p>名店のこだわり、歴史に彩られたご当地ラーメン、スープや麺の奥深き秘密。ラーメンを愛する全ての人へ贈るスペシャルコンテンツ集。</p>
+   </div>
+  </div>
+ </section>
+
+ <!-- Filter & Search Bar -->
+ <div class="filter-bar">
+  <div class="wrap filter-flex">
+   <div class="tabs" id="tabContainer">
+    <button class="tab-btn active" data-cat="all">すべて</button>
+    <button class="tab-btn" data-cat="famous">一度は食べたい名店</button>
+    <button class="tab-btn" data-cat="local">ご当地ラーメン</button>
+    <button class="tab-btn" data-cat="soup">スープ解説</button>
+    <button class="tab-btn" data-cat="trend">話題の行列店</button>
+    <button class="tab-btn" data-cat="story">店主のこだわり</button>
+   </div>
+   <div class="search-mini">
+    <input type="text" id="articleSearch" placeholder="特集を検索 (例: 煮干し, 札幌)">
+    <button id="searchBtn" aria-label="検索"><svg class="ic"><use href="#srch"/></svg></button>
+   </div>
+  </div>
+ </div>
+
+ <div class="wrap">
+  <!-- Pick Up / Featured Articles -->
+  <div class="sec-title" id="featuredSectionTitle">
+   <svg class="ic"><use href="#star"/></svg>
+   <h2>注目の特集記事</h2>
+  </div>
+
+  <div class="grid-featured" id="featuredGrid">
+   <article class="card-main" data-cat="famous" data-keywords="札幌味噌 札幌 名店 ラーメン">
+    <div class="card-main-img">
+     <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=800&q=80" alt="一度は食べたい全国の名店">
+     <span class="card-tag">一度は食べたい名店</span>
+    </div>
+    <div class="card-main-body">
+     <h3>究極の一杯を求めて。日本全国「伝説の名店」7選</h3>
+     <p>創業から数十年間守り抜かれた伝統のスープから、令和のラーメン界を牽引する新進気鋭のイノベーターまで。一生に一度は訪れたい至高の店を厳選解説。</p>
+     <div class="card-meta">
+      <span>2026.10.15 | ライター：ラーメン探訪記</span>
+      <button class="btn out-sm bookmark-btn" data-id="f1" style="border:none;background:none;color:var(--muted);cursor:pointer;"><svg class="ic"><use href="#heart"/></svg> お気に入り</button>
+     </div>
+    </div>
+   </article>
+
+   <article class="card-main" data-cat="soup" data-keywords="スープ 清湯 白湯 札幌味噌 家系 博多豚骨 喜多方">
+    <div class="card-main-img">
+     <img src="https://images.unsplash.com/photo-1552611052-33e04de081de?auto=format&fit=crop&w=800&q=80" alt="スープの魅力を徹底解説">
+     <span class="card-tag">スープ解説</span>
+    </div>
+    <div class="card-main-body">
+     <h3>「清湯」と「白湯」の違いとは？スープの科学と出汁の美学</h3>
+     <p>豚骨、鶏ガラ、煮干し、昆布。素材の組み合わせと火加減が生む旨味の相乗効果。スープの基礎知識を知ることで、いつもの一杯がさらに味わい深くなる。</p>
+     <div class="card-meta">
+      <span>2026.10.02 | ライター：スープ研究家</span>
+      <button class="btn out-sm bookmark-btn" data-id="f2" style="border:none;background:none;color:var(--muted);cursor:pointer;"><svg class="ic"><use href="#heart"/></svg> お気に入り</button>
+     </div>
+    </div>
+   </article>
+  </div>
+
+  <!-- Quick Category Links / Pickups -->
+  <div class="pickup-box">
+   <div class="pickup-header">
+    <svg class="ic" style="color:var(--gold);width:20px;height:20px;"><use href="#crown"/></svg>
+    <h3>人気特集キーワード・トピック</h3>
+   </div>
+   <div class="pickup-list">
+    <div class="pickup-item" data-search="札幌味噌">
+     <span class="num">1</span>
+     <span>香ばしいラードと中太ちぢれ麺！「札幌味噌ラーメン」の進化系</span>
+     <svg class="ic" style="color:var(--muted);"><use href="#chev"/></svg>
+    </div>
+    <div class="pickup-item" data-search="博多豚骨">
+     <span class="num">2</span>
+     <span>極細ストレート麺と呼び戻しスープ。「博多・長浜豚骨」の歴史</span>
+     <svg class="ic" style="color:var(--muted);"><use href="#chev"/></svg>
+    </div>
+    <div class="pickup-item" data-search="喜多方">
+     <span class="num">3</span>
+     <span>朝ラー文化を育んだ「喜多方ラーメン」平打ち多加水麺の秘密</span>
+     <svg class="ic" style="color:var(--muted);"><use href="#chev"/></svg>
+    </div>
+    <div class="pickup-item" data-search="家系">
+     <span class="num">4</span>
+     <span>濃厚豚骨醤油＆鶏油の黄金比。「横浜家系ラーメン」系譜を追う</span>
+     <svg class="ic" style="color:var(--muted);"><use href="#chev"/></svg>
+    </div>
+   </div>
+  </div>
+
+  <!-- Articles List Grid -->
+  <div class="sec-title" id="articleListSectionTitle">
+   <svg class="ic"><use href="#book"/></svg>
+   <h2>特集記事一覧</h2>
+  </div>
+
+  <div class="grid-articles" id="articleGrid">
+   <article class="article-card" data-cat="local" data-keywords="尾道 喜多方 和歌山 ご当地 ラーメン">
+    <div class="article-thumb">
+     <img src="https://images.unsplash.com/photo-1617093727343-374698b1b08d?auto=format&fit=crop&w=600&q=80" alt="地元民がおすすめするご当地ラーメン">
+     <span class="card-tag">ご当地ラーメン</span>
+    </div>
+    <div class="article-body">
+     <h3>地元民が熱愛！尾道・喜多方・和歌山のご当地秘湯系ラーメン</h3>
+     <p>背脂が浮く醤油スープから和歌山の濃厚豚骨醤油まで、現地でしか味わえない本物の味。</p>
+     <div class="card-meta">
+      <span>2026.09.28</span>
+      <button class="bookmark-btn" data-id="a1" aria-label="お気に入り" style="border:none;background:none;color:var(--muted);cursor:pointer;"><svg class="ic"><use href="#heart"/></svg></button>
+     </div>
+    </div>
+   </article>
+
+   <article class="article-card" data-cat="trend" data-keywords="行列 昆布水 つけ麺 新世代 トレンド">
+    <div class="article-thumb">
+     <img src="https://images.unsplash.com/photo-1591814468924-caf88d1232e1?auto=format&fit=crop&w=600&q=80" alt="行列のできる話題のお店">
+     <span class="card-tag">話題の行列店</span>
+    </div>
+    <div class="article-body">
+     <h3>2時間待ちも納得！今一番並んでも食べたい新世代ラーメン</h3>
+     <p>ミシュラン掲載店からSNSで大バズり中の昆布水つけ麺まで、トレンドの最前線を徹底レポート。</p>
+     <div class="card-meta">
+      <span>2026.09.20</span>
+      <button class="bookmark-btn" data-id="a2" aria-label="お気に入り" style="border:none;background:none;color:var(--muted);cursor:pointer;"><svg class="ic"><use href="#heart"/></svg></button>
+     </div>
+    </div>
+   </article>
+
+   <article class="article-card" data-cat="story" data-keywords="自家製麺 小麦粉 加水率 店主 こだわり">
+    <div class="article-thumb">
+     <img src="https://images.unsplash.com/photo-1555126634-323283e090fa?auto=format&fit=crop&w=600&q=80" alt="ラーメン店主のこだわり">
+     <span class="card-tag">店主のこだわり</span>
+    </div>
+    <div class="article-body">
+     <h3>「自家製麺」にかける情熱。小麦粉のブレンドと加水率の秘密</h3>
+     <p>スープとの相性を追求し、一歩も譲らない自家製麺の世界。名店主たちが語る「最高の食感」。</p>
+     <div class="card-meta">
+      <span>2026.09.12</span>
+      <button class="bookmark-btn" data-id="a3" aria-label="お気に入り" style="border:none;background:none;color:var(--muted);cursor:pointer;"><svg class="ic"><use href="#heart"/></svg></button>
+     </div>
+    </div>
+   </article>
+
+   <article class="article-card" data-cat="soup" data-keywords="煮干し 淡麗 セメント スープ ラーメン">
+    <div class="article-thumb">
+     <img src="https://images.unsplash.com/photo-1623341214825-9f4f963727da?auto=format&fit=crop&w=600&q=80" alt="煮干しスープの世界">
+     <span class="card-tag">スープ解説</span>
+    </div>
+    <div class="article-body">
+     <h3>淡麗からセメント系まで！「煮干しラーメン」の魅力と奥深さ</h3>
+     <p>産地ごとの煮干しの違いや下処理のこだわり。エグみを抑えて旨味を引き出す職人技。</p>
+     <div class="card-meta">
+      <span>2026.08.30</span>
+      <button class="bookmark-btn" data-id="a4" aria-label="お気に入り" style="border:none;background:none;color:var(--muted);cursor:pointer;"><svg class="ic"><use href="#heart"/></svg></button>
+     </div>
+    </div>
+   </article>
+
+   <article class="article-card" data-cat="famous" data-keywords="老舗 創業 昭和 平成 ラーメン 名店">
+    <div class="article-thumb">
+     <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80" alt="老舗の歴史">
+     <span class="card-tag">一度は食べたい名店</span>
+    </div>
+    <div class="article-body">
+     <h3>昭和から平成、令和へ。創業50年を超える「老舗ラーメン店」の物語</h3>
+     <p>時代が変わっても愛され続ける理由とは？伝統を守りながら進化する老舗のプライド。</p>
+     <div class="card-meta">
+      <span>2026.08.18</span>
+      <button class="bookmark-btn" data-id="a5" aria-label="お気に入り" style="border:none;background:none;color:var(--muted);cursor:pointer;"><svg class="ic"><use href="#heart"/></svg></button>
+     </div>
+    </div>
+   </article>
+
+   <article class="article-card" data-cat="local" data-keywords="久留米 熊本 鹿児島 九州 豚骨 ラーメン">
+    <div class="article-thumb">
+     <img src="https://images.unsplash.com/photo-1591814468924-caf88d1232e1?auto=format&fit=crop&w=600&q=80" alt="九州豚骨ラーメンめぐり">
+     <span class="card-tag">ご当地ラーメン</span>
+    </div>
+    <div class="article-body">
+     <h3>久留米・熊本・鹿児島。九州「豚骨ラーメン」のルーツと個性派スープ</h3>
+     <p>白濁スープ発祥の地・久留米からマー油が香る熊本まで、九州豚骨の多彩な文化を深掘り。</p>
+     <div class="card-meta">
+      <span>2026.08.05</span>
+      <button class="bookmark-btn" data-id="a6" aria-label="お気に入り" style="border:none;background:none;color:var(--muted);cursor:pointer;"><svg class="ic"><use href="#heart"/></svg></button>
+     </div>
+    </div>
+   </article>
+  </div>
+
+  <!-- Interactive CTA Section -->
+  <div class="bm-cta">
+   <h3>お気に入りの特集記事を保存しよう</h3>
+   <p>気になった記事や行ってみたいラーメン店の情報をブックマークに登録して、後からいつでも見返すことができます。</p>
+   <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+    <a href="index.html#ranking" class="btn red"><svg class="ic"><use href="#crown"/></svg> 全国ランキングを見る</a>
+    <button class="btn out" id="showBookmarks"><svg class="ic"><use href="#heart"/></svg> 保存した記事を見る (<span id="bmCount">0</span>)</button>
+   </div>
+  </div>
+
+ </div>
+</main>
+
+<!-- Footer -->
+<footer>
+ <div class="wrap">
+  <div class="ft">
+   <div>
+    <a class="logo" href="index.html">
+     <svg class="ic" style="color:#fff"><use href="#bowl"/></svg>
+     <b style="font-size:17px">全国ラーメンランキング <svg class="ic c"><use href="#crown"/></svg></b>
+    </a>
+    <p class="about">全国のラーメン店と、ラーメンを愛する人をつなぐ情報サイト。<br>今日の一杯から、旅先で出会う特別な一杯まで。<br>ラーメンの楽しさとおいしさを、全国へ。</p>
+   </div>
+   <div>
+    <h4>サイトメニュー</h4>
+    <ul>
+     <li><a href="index.html#ranking">全国ランキング</a></li>
+     <li><a href="index.html#area">エリアから探す</a></li>
+     <li><a href="index.html#type">ラーメンの種類</a></li>
+     <li><a href="tokushu.html">ラーメン特集</a></li>
+    </ul>
+   </div>
+   <div>
+    <h4>その他</h4>
+    <ul>
+     <li><a href="index.html#review">口コミ・レビュー</a></li>
+     <li><a href="#">掲載店舗について</a></li>
+     <li><a href="#">お問い合わせ</a></li>
+     <li><a href="#">プライバシーポリシー</a></li>
+    </ul>
+   </div>
+   <div class="sns">
+    <a href="#" aria-label="X">𝕏</a>
+    <a href="#" aria-label="Instagram">◎</a>
+    <a href="#" aria-label="YouTube">▶</a>
+    <button id="top" aria-label="ページ上部へ">︿</button>
+   </div>
+  </div>
+  <p class="copy">© 全国ラーメンランキング. All Right Reserved.</p>
+ </div>
+</footer>
+
+<div id="toast"></div>
+
+<script>
+(function(){
+ var $=function(s){return document.querySelector(s)};
+ var $$=function(s){return document.querySelectorAll(s)};
+
+ // Mobile Menu Toggle
+ var nav=$('#nav'),mb=$('#menuBtn');
+ if(mb){
+  mb.addEventListener('click',function(){
+   var o=nav.classList.toggle('open');
+   mb.setAttribute('aria-expanded',o);
+  });
+ }
+
+ // Toast Notification
+ var t=$('#toast'),tm;
+ function toast(m){
+  t.textContent=m;
+  t.classList.add('on');
+  clearTimeout(tm);
+  tm=setTimeout(function(){t.classList.remove('on')},2200);
+ }
+
+ // Bookmark Feature State
+ var bookmarks = new Set();
+ function updateBookmarksCount(){
+  var cnt = $('#bmCount');
+  if(cnt) cnt.textContent = bookmarks.size;
+ }
+
+ $$('.bookmark-btn').forEach(function(btn){
+  btn.addEventListener('click', function(e){
+   e.preventDefault();
+   var id = btn.dataset.id || Math.random().toString();
+   if(bookmarks.has(id)){
+    bookmarks.delete(id);
+    btn.style.color = 'var(--muted)';
+    toast('お気に入りから削除しました');
+   } else {
+    bookmarks.add(id);
+    btn.style.color = 'var(--red)';
+    toast('記事をお気に入りに保存しました！');
+   }
+   updateBookmarksCount();
+  });
+ });
+
+ $('#showBookmarks').addEventListener('click', function(){
+  if(bookmarks.size === 0){
+   toast('保存された記事はまだありません');
+  } else {
+   toast('保存された記事: ' + bookmarks.size + '件（デモ表示）');
+  }
+ });
+
+ // Tab Category Filtering
+ var tabs = $$('.tab-btn');
+ var articles = $$('.card-main, .article-card');
+
+ tabs.forEach(function(tab){
+  tab.addEventListener('click', function(){
+   tabs.forEach(function(t){t.classList.remove('active')});
+   tab.classList.add('active');
+   var cat = tab.dataset.cat;
+
+   articles.forEach(function(art){
+    if(cat === 'all' || art.dataset.cat === cat){
+     art.style.display = 'flex';
+    } else {
+     art.style.display = 'none';
+    }
+   });
+  });
+ });
+
+ // Search Input Filter
+ function filterSearch(kw){
+  kw = kw.toLowerCase().trim();
+  articles.forEach(function(art){
+   var txt = art.textContent.toLowerCase();
+   var keywords = (art.dataset.keywords || '').toLowerCase();
+   if(!kw || txt.includes(kw) || keywords.includes(kw)){
+    art.style.display = 'flex';
+   } else {
+    art.style.display = 'none';
+   }
+  });
+ }
+
+ $('#searchBtn').addEventListener('click', function(){
+  filterSearch($('#articleSearch').value);
+ });
+
+ $('#articleSearch').addEventListener('keyup', function(e){
+  if(e.key === 'Enter'){
+   filterSearch($('#articleSearch').value);
+  }
+ });
+
+ // Pickup Keyword Click Action (Filter + Smooth Scroll)
+ $$('.pickup-item').forEach(function(item){
+  item.addEventListener('click', function(e){
+   e.preventDefault();
+   var kw = item.dataset.search;
+   $('#articleSearch').value = kw;
+   filterSearch(kw);
+   
+   // タブを「すべて」にリセットして全記事から検索できるようにする
+   tabs.forEach(function(t){
+    if(t.dataset.cat === 'all') t.classList.add('active');
+    else t.classList.remove('active');
+   });
+
+   toast('「' + kw + '」に関連する記事を表示しました');
+
+   // 注目記事セクションへスムーズスクロール
+   var targetSec = $('#featuredSectionTitle');
+   if(targetSec){
+    targetSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+   }
+  });
+ });
+
+ // Scroll Top
+ $('#top').addEventListener('click',function(){
+  window.scrollTo({top:0,behavior:'smooth'});
+ });
+})();
+</script>
+</body>
+</html>

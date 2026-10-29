@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>全国ラーメンランキング</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700;900&display=swap">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="crown" viewBox="0 0 24 24"><path d="M2 19h20l1-11-6 5-5-9-5 9-6-5z" fill="currentColor"/></symbol>
+<symbol id="bowl" viewBox="0 0 40 40"><path d="M4 18h32a16 16 0 0 1-32 0z" fill="currentColor"/><path d="M12 14c4-3 10-3 16 0M14 9l16-5M13 11l17-5" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/></symbol>
+<symbol id="pin" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" fill="currentColor"/></symbol>
+<symbol id="srch" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15 15l6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+<symbol id="chev" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="arr" viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="star" viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7.2-6.3-3.7-6.3 3.7 1.6-7.2L2 9.6 9 9z" fill="currentColor"/></symbol>
+<symbol id="cam" viewBox="0 0 24 24"><path d="M3 7h4l2-3h6l2 3h4v13H3z" fill="currentColor"/><circle cx="12" cy="13" r="3.5" fill="var(--bg)"/></symbol>
+<symbol id="book" viewBox="0 0 24 24"><path d="M2 5h8a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H2zM22 5h-8a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h8z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+<symbol id="menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="map" viewBox="0 0 40 40"><path d="M24 3l4 5-2 6 3 3-1 6-6 3-3 6-3-2 2-6-5-3 3-5-4-4 5-2 4 2z" fill="currentColor"/></symbol>
+</svg>
+
+<header>
+ <div class="wrap hd">
+  <a class="logo" href="#">
+   <svg class="ic"><use href="#bowl"/></svg>
+   <span><b>全国<i>ラーメン</i>ランキング <svg class="ic c"><use href="#crown"/></svg></b><small>日本全国のうまいラーメンを、ランキングで紹介</small></span>
+  </a>
+  <nav id="nav">
+   <a href="#">ホーム</a><a href="#ranking">ランキング</a><a href="area.html">エリアから探す</a><a href="#type">ラーメンの種類</a><a href="#feature">ラーメン特集</a><a href="#review">口コミ・レビュー</a>
+  </nav>
+  <span class="sp"></span>
+  <a class="hbtn" href="#search" aria-label="検索"><svg class="ic"><use href="#srch"/></svg></a>
+  <button class="hbtn" id="menuBtn" aria-label="メニュー" aria-expanded="false"><svg class="ic"><use href="#menu"/></svg></button>
+ </div>
+</header>
+
+<main>
+<div class="hero"> 
+    <img src="img/a.jpeg" alt="">
+ <div class="wrap">
+  <h1>全国のうまい<span>ラーメン</span>、<br>ここに集結。</h1>
+  <h2>一杯の感動を、あなたに。</h2>
+  <p>全国各地の人気ラーメン店から、地元で愛される隠れた名店まで。本当に食べたい一杯が見つかる、ラーメン好きのためのランキングサイト。</p>
+  <div class="btns">
+   <a class="btn red" href="#ranking"><svg class="ic"><use href="#crown"/></svg>全国ランキングを見る</a>
+   <a class="btn line" href="area.html"><svg class="ic"><use href="#pin"/></svg>エリアから探す</a>
+  </div>
+ </div>
+</div>
+
+<section>
+ <div class="wrap top">
+  <div id="ranking">
+   <div class="sh"><svg class="ic"><use href="#crown"/></svg><div><small>RANKING</small><h2>今、食べたい人気ラーメン</h2><p>全国のラーメン店をチェックして、話題の一杯を見つけよう！</p></div></div>
+   <ul class="rank">
+    <li><a class="card" href="#"><span class="num">1</span><img src="img/b.jpg" alt="豚骨ラーメン"><div class="info"><b>一閒（東京・千代田区）</b><small>とんこつラーメン</small><div class="score"><svg class="ic"><use href="#star"/></svg> 4.5（2,341件）</div></div></a></li>
+    <li><a class="card" href="#"><span class="num">2</span><img src="img/c.jpg" alt="味噌ラーメン"><div class="info"><b>らーめん ふくの屋（札幌）</b><small>味噌ラーメン</small><div class="score"><svg class="ic"><use href="#star"/></svg> 4.4（1,892件）</div></div></a></li>
+    <li><a class="card" href="#"><span class="num">3</span><img src="img/d.jpg" alt="醤油ラーメン"><div class="info"><b>麺や いちのはな（東京・新宿）</b><small>醤油ラーメン</small><div class="score"><svg class="ic"><use href="#star"/></svg> 4.3（1,756件）</div></div></a></li>
+   </ul>
+   <div class="more"><a href="rannkinngu.html">ランキングをもっと見る <svg class="ic"><use href="#arr"/></svg></a></div>
+  </div>
+  <div class="area" id="area">
+   <div class="sh"><svg class="ic"><use href="#map"/></svg><div><small>AREA</small><h2>エリアから探す</h2><p>47都道府県から、お気に入りのラーメンを見つけよう。</p></div></div>
+   <div class="areas">
+    <a class="card" href="hokkaido.html" data-area="北海道・東北"><img src="img/e.jpg" alt=""><div class="row"><div class="info" style="padding:0"><b>北海道・東北</b><small>北海道・青森・宮城 ほか</small></div><svg class="ic"><use href="#chev"/></svg></div></a>
+    <a class="card" href="kantou.html" data-area="関東"><img src="img/f.jpg" alt=""><div class="row"><div class="info" style="padding:0"><b>関東</b><small>東京・神奈川・埼玉 ほか</small></div><svg class="ic"><use href="#chev"/></svg></div></a>
+    <a class="card" href="tyuubukinki.html" data-area="中部・近畿"><img src="img/g.jpg" alt=""><div class="row"><div class="info" style="padding:0"><b>中部・近畿</b><small>愛知・新潟・京都・大阪 ほか</small></div><svg class="ic"><use href="#chev"/></svg></div></a>
+    <a class="card" href="tyuugokusikokukyuusyuu.html" data-area="中国・四国・九州"><img src="img/h.jpg" alt=""><div class="row"><div class="info" style="padding:0"><b>中国・四国・九州</b><small>広島・香川・福岡・熊本 ほか</small></div><svg class="ic"><use href="#chev"/></svg></div></a>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section class="type" id="type">
+ <div class="wrap">
+  <div class="sh"><svg class="ic"><use href="#bowl"/></svg><div><small>TYPE</small><h2>ラーメンの種類から探す</h2><p>定番の味から個性派まで、あなたの好みの一杯を見つけてください。</p></div></div>
+  <div class="types">
+   <a class="card" href="tonkotu.html" data-type="豚骨ラーメン"><img src="img/i.jpg" alt=""><div class="info"><b>豚骨ラーメン <svg class="ic"><use href="#chev"/></svg></b><p>濃厚でクリーミーなスープと、歯切れのよい麺が魅力。</p></div></a>
+   <a class="card" href="syouyu.html" data-type="醤油ラーメン"><img src="img/j.jpg" alt=""><div class="info"><b>醤油ラーメン <svg class="ic"><use href="#chev"/></svg></b><p>醤油の香りと出汁の旨み。シンプルだからこそ奥深い味わい。</p></div></a>
+   <a class="card" href="miso.html" data-type="味噌ラーメン"><img src="img/k.jpg"><div class="info"><b>味噌ラーメン <svg class="ic"><use href="#chev"/></svg></b><p>コクのある味噌スープと豊かな風味。野菜やバターとの相性も抜群。</p></div></a>
+   <a class="card" href="shio.html" data-type="塩ラーメン"><img src="img/l.jpg" alt=""><div class="info"><b>塩ラーメン <svg class="ic"><use href="#chev"/></svg></b><p>澄んだスープに広がる繊細な旨み。素材の味をじっくり楽しめます。</p></div></a>
+  </div>
+ </div>
+</section>
+
+<section class="feat" id="feature">
+ <img src="" alt="">
+ <div class="wrap">
+  <div>
+   <div class="sh"><svg class="ic"><use href="#book"/></svg><div><small>SPECIAL FEATURE</small><h2>ラーメンの世界を、もっと深く。</h2></div></div>
+   <p style="margin-left:36px">全国には、まだ知られていない魅力的なラーメンがたくさんあります。店主のこだわりやご当地ラーメンの魅力、ラーメンをもっと楽しむための情報を特集記事でお届けします。</p>
+   <a class="btn" href="tokusyuu.html" style="margin-left:36px">ラーメン特集を読む <svg class="ic"><use href="#arr"/></svg></a>
+  </div>
+  <ul>
+   <li><a href="meitenn.html">一度は食べたい全国の名店</a></li><li><a href="gotouti.html">地元民がおすすめするご当地ラーメン</a></li><li><a href="su-pu.html">スープの魅力を徹底解説</a></li><li><a href="gyouretu.html">行列のできる話題のお店</a></li><li><a href="kodawari.html">ラーメン店主のこだわり</a></li>
+  </ul>
+ </div>
+</section>
+
+<section id="search">
+ <div class="wrap srch" style="padding-bottom:20px">
+  <div class="sh"><svg class="ic" style="width:30px;height:30px"><use href="#srch"/></svg><div><small>SEARCH</small><h2>お店を探す</h2><p>地域や味のよい好みから、行ってみたいラーメン店を探せます。</p></div></div>
+  <form id="sf">
+   <div><label for="fa">エリア</label><select id="fa"><option>全国</option><option>北海道・東北</option><option>関東</option><option>中部・近畿</option><option>中国・四国・九州</option></select></div>
+   <div><label for="ft">ラーメンの種類</label><select id="ft"><option>すべての種類</option><option>豚骨ラーメン</option><option>醤油ラーメン</option><option>味噌ラーメン</option><option>塩ラーメン</option></select></div>
+   <div class="kw"><label for="fk">キーワード</label><input id="fk" type="text" placeholder="例：濃厚、煮干し、駅近"></div>
+   <button class="btn red" type="submit" style="height:38px">検索する</button>
+  </form>
+ </div>
+ <div class="wrap"><p id="result" role="status"></p></div>
+</section>
+
+<section id="review" style="padding-top:8px">
+ <div class="wrap rev">
+  <div class="sh"><svg class="ic" style="width:28px;height:28px"><use href="#cam"/></svg><div><small>REVIEW</small><h2>口コミ・レビュー</h2><p>あなたの一杯をシェアして、ラーメンの魅力を広げましょう。</p></div></div>
+  <img class="strip" src="">
+  <div class="acts">
+   <button onclick="location.href='kutikomi.html'" class="btn red" data-toast="口コミ投稿フォームを開きます（デモ）">口コミを投稿する <svg class="ic"><use href="#arr"/></svg></button>
+   <button class="btn out" data-toast="お気に入りに登録しました（デモ）"><svg class="ic"><use href="#star"/></svg> お気に入りのお店を登録する</button>
+  </div>
+ </div>
+</section>
+</main>
+
+<footer>
+ <div class="wrap">
+  <div class="ft">
+   <div><a class="logo" href="#"><svg class="ic" style="color:#fff"><use href="#bowl"/></svg><b style="font-size:17px">全国ラーメンランキング <svg class="ic c"><use href="#crown"/></svg></b></a>
+    <p class="about">全国のラーメン店と、ラーメンを愛する人をつなぐ情報サイト。<br>今日の一杯から、旅先で出会う特別な一杯まで。<br>ラーメンの楽しさとおいしさを、全国へ。</p></div>
+   <div><h4>サイトメニュー</h4><ul><li><a href="#ranking">全国ランキング</a></li><li><a href="#area">エリアから探す</a></li><li><a href="#type">ラーメンの種類</a></li><li><a href="#feature">ラーメン特集</a></li></ul></div>
+   <div><h4>その他</h4><ul><li><a href="review.html">口コミ・レビュー</a></li><li><a href="keisai.html">掲載店舗について</a></li><li><a href="otoiawase.html">お問い合わせ</a></li><li><a href="privacy.html">プライバシーポリシー</a></li></ul></div>
+   <div class="sns"><a href="#" aria-label="X">𝕏</a><a href="#" aria-label="Instagram">◎</a><a href="#" aria-label="YouTube">▶</a><button id="top" aria-label="ページ上部へ">︿</button></div>
+  </div>
+  <p class="copy">© 全国ラーメンランキング. All Right Reserved.</p>
+ </div>
+</footer>
+<div id="toast"></div>
+
+<script>
+(function(){
+ var $=function(s){return document.querySelector(s)};
+ var nav=$('#nav'),mb=$('#menuBtn');
+ mb.addEventListener('click',function(){var o=nav.classList.toggle('open');mb.setAttribute('aria-expanded',o)});
+ nav.addEventListener('click',function(e){if(e.target.tagName==='A'){nav.classList.remove('open');mb.setAttribute('aria-expanded',false)}});
+ var t=$('#toast'),tm;
+ function toast(m){t.textContent=m;t.classList.add('on');clearTimeout(tm);tm=setTimeout(function(){t.classList.remove('on')},2200)}
+ document.querySelectorAll('[data-toast]').forEach(function(b){b.addEventListener('click',function(){toast(b.dataset.toast)})});
+ document.querySelectorAll('[data-area]').forEach(function(a){a.addEventListener('click',function(){$('#fa').value=a.dataset.area})});
+ document.querySelectorAll('[data-type]').forEach(function(a){a.addEventListener('click',function(){$('#ft').value=a.dataset.type})});
+ $('#sf').addEventListener('submit',function(e){
+  e.preventDefault();
+  var k=$('#fk').value.trim();
+  $('#result').textContent='「'+$('#fa').value+'」×「'+$('#ft').value+'」'+(k?'×「'+k+'」':'')+' の条件で検索しました（デモ表示）';
+ });
+ $('#top').addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+})();
+</script>
+</body>
+</html>

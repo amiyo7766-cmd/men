@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>北海道のラーメン｜全国ラーメンランキング</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700;900&display=swap">
+<style>
+/* 北海道ページ専用 */
+.crumb{border-bottom:1px solid var(--line);font-size:11px;color:var(--muted)}
+.crumb ol{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:10px 0;list-style:none}
+.crumb li+li::before{content:"›";margin-right:6px}
+.crumb a:hover{color:var(--red)}
+.crumb [aria-current]{color:var(--text);font-weight:500}
+.lead{max-width:640px;font-size:13px;line-height:2;margin:0 0 22px 36px}
+.types.four{grid-template-columns:repeat(4,1fr)}
+.types .city{display:inline-block;font-size:10px;color:var(--red);border:1px solid var(--red);border-radius:2px;padding:0 6px;margin-bottom:6px;line-height:1.6}
+.rank.wide .info b{font-size:13px}
+.rank.wide .info p{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.7}
+.cities{display:flex;flex-wrap:wrap;gap:10px;margin-left:36px}
+.cities a{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border:1px solid var(--line);border-radius:3px;background:var(--card);font-size:12px;font-weight:500;transition:border-color .2s,color .2s}
+.cities a small{font-size:10px;color:var(--muted);font-weight:400}
+.cities a:hover{border-color:var(--red);color:var(--red)}
+.tips{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-left:36px}
+.tips .card{padding:14px 16px 16px}
+.tips h3{font:700 14px/1.5 "Noto Serif JP",serif;margin-bottom:6px;letter-spacing:.04em}
+.tips p{font-size:11.5px;color:var(--muted);line-height:1.9}
+.other{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:18px;margin-top:6px}
+.other .btn{min-width:200px}
+@media(max-width:900px){
+ .types.four{grid-template-columns:1fr 1fr}
+ .tips{grid-template-columns:1fr;margin-left:0}
+ .lead,.cities{margin-left:0}
+}
+@media(max-width:560px){.types.four{grid-template-columns:1fr}.other .btn{width:100%}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="crown" viewBox="0 0 24 24"><path d="M2 19h20l1-11-6 5-5-9-5 9-6-5z" fill="currentColor"/></symbol>
+<symbol id="bowl" viewBox="0 0 40 40"><path d="M4 18h32a16 16 0 0 1-32 0z" fill="currentColor"/><path d="M12 14c4-3 10-3 16 0M14 9l16-5M13 11l17-5" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/></symbol>
+<symbol id="pin" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" fill="currentColor"/></symbol>
+<symbol id="srch" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15 15l6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+<symbol id="chev" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="arr" viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="star" viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7.2-6.3-3.7-6.3 3.7 1.6-7.2L2 9.6 9 9z" fill="currentColor"/></symbol>
+<symbol id="book" viewBox="0 0 24 24"><path d="M2 5h8a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H2zM22 5h-8a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h8z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+<symbol id="menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="map" viewBox="0 0 40 40"><path d="M24 3l4 5-2 6 3 3-1 6-6 3-3 6-3-2 2-6-5-3 3-5-4-4 5-2 4 2z" fill="currentColor"/></symbol>
+</svg>
+
+<header>
+ <div class="wrap hd">
+  <a class="logo" href="index.html">
+   <svg class="ic"><use href="#bowl"/></svg>
+   <span><b>全国<i>ラーメン</i>ランキング <svg class="ic c"><use href="#crown"/></svg></b><small>日本全国のうまいラーメンを、ランキングで紹介</small></span>
+  </a>
+  <nav id="nav">
+   <a href="index.html">ホーム</a><a href="index.html#ranking">ランキング</a><a href="area.html">エリアから探す</a><a href="index.html#type">ラーメンの種類</a><a href="index.html#feature">ラーメン特集</a><a href="index.html#review">口コミ・レビュー</a>
+  </nav>
+  <span class="sp"></span>
+  <a class="hbtn" href="index.html#search" aria-label="検索"><svg class="ic"><use href="#srch"/></svg></a>
+  <button class="hbtn" id="menuBtn" aria-label="メニュー" aria-expanded="false"><svg class="ic"><use href="#menu"/></svg></button>
+ </div>
+</header>
+
+<div class="crumb" role="navigation" aria-label="パンくずリスト">
+ <div class="wrap">
+  <ol>
+   <li><a href="index.html">ホーム</a></li>
+   <li><a href="area.html">エリアから探す</a></li>
+   <li aria-current="page">北海道</li>
+  </ol>
+ </div>
+</div>
+
+<main>
+<div class="hero">
+ <img src="img/e.jpg" alt="">
+ <div class="wrap">
+  <h1>北海道の<span>ラーメン</span>、<br>寒い土地が育てた一杯。</h1>
+  <h2>札幌・旭川・函館・釧路</h2>
+  <p>味噌・醤油・塩。街ごとに味が違うのが北海道ラーメンの面白さ。ご当地の代表的な味と、人気のお店をまとめました。</p>
+  <div class="btns">
+   <a class="btn red" href="#ranking"><svg class="ic"><use href="#crown"/></svg>北海道の人気ランキング</a>
+   <a class="btn line" href="#city"><svg class="ic"><use href="#pin"/></svg>街から探す</a>
+  </div>
+ </div>
+</div>
+
+<section class="type" id="type">
+ <div class="wrap">
+  <div class="sh"><svg class="ic"><use href="#bowl"/></svg><div><small>LOCAL TASTE</small><h2>北海道の代表的なご当地ラーメン</h2></div></div>
+  <p class="lead">北海道は広く、ラーメンも街によって個性が分かれます。まずは4つの代表的な味から、気になる一杯を選んでみてください。</p>
+  <div class="types four">
+   <a class="card" href="miso.html"><img src="img/k.jpg" alt="札幌味噌ラーメン"><div class="info"><span class="city">札幌</span><b>札幌味噌ラーメン <svg class="ic"><use href="#chev"/></svg></b><p>コクのある味噌スープに、太めの縮れ麺。炒めた野菜の香ばしさも魅力です。</p></div></a>
+   <a class="card" href="syouyu.html"><img src="img/j.jpg" alt="旭川醤油ラーメン"><div class="info"><span class="city">旭川</span><b>旭川醤油ラーメン <svg class="ic"><use href="#chev"/></svg></b><p>魚介と豚骨を合わせたスープに醤油ダレ。ラードの膜で冷めにくい一杯です。</p></div></a>
+   <a class="card" href="shio.html"><img src="img/l.jpg" alt="函館塩ラーメン"><div class="info"><span class="city">函館</span><b>函館塩ラーメン <svg class="ic"><use href="#chev"/></svg></b><p>透き通ったスープに細めのストレート麺。やさしい塩味で最後まで飲み干せます。</p></div></a>
+   <a class="card" href="syouyu.html"><img src="img/d.jpg" alt="釧路ラーメン"><div class="info"><span class="city">釧路</span><b>釧路ラーメン <svg class="ic"><use href="#chev"/></svg></b><p>あっさりした醤油スープに、細めの縮れ麺。港町らしい軽やかな味わいです。</p></div></a>
+  </div>
+ </div>
+</section>
+
+<section id="ranking">
+ <div class="wrap">
+  <div class="sh"><svg class="ic"><use href="#crown"/></svg><div><small>HOKKAIDO RANKING</small><h2>北海道の人気ラーメン</h2><p>北海道内のお店から、評価の高い一杯をご紹介します。</p></div></div>
+  <ul class="rank wide">
+   <li><a class="card" href="#"><span class="num">1</span><img src="img/c.jpg" alt="味噌ラーメン"><div class="info"><b>味噌屋 雪あかり（札幌・すすきの）</b><small>味噌ラーメン</small><p>赤味噌を炒めた香りが立つ、濃厚なスープ。〆の一杯にも人気です。</p><div class="score"><svg class="ic"><use href="#star"/></svg> 4.6（1,284件）</div></div></a></li>
+   <li><a class="card" href="#"><span class="num">2</span><img src="img/d.jpg" alt="醤油ラーメン"><div class="info"><b>旭川らーめん 北の灯（旭川市）</b><small>醤油ラーメン</small><p>魚介の香るダブルスープと、ラードの膜で最後まで熱々の旭川スタイル。</p><div class="score"><svg class="ic"><use href="#star"/></svg> 4.5（986件）</div></div></a></li>
+   <li><a class="card" href="#"><span class="num">3</span><img src="img/l.jpg" alt="塩ラーメン"><div class="info"><b>函館 潮騒（函館市）</b><small>塩ラーメン</small><p>澄んだスープにほどよい塩気。海鮮の出汁が効いた、やさしい味わいです。</p><div class="score"><svg class="ic"><use href="#star"/></svg> 4.4（872件）</div></div></a></li>
+  </ul>
+  <div class="more"><a href="rannkinngu.html">ランキングをもっと見る <svg class="ic"><use href="#arr"/></svg></a></div>
+ </div>
+</section>
+
+<section class="type" id="city">
+ <div class="wrap">
+  <div class="sh"><svg class="ic"><use href="#map"/></svg><div><small>CITY</small><h2>北海道の街から探す</h2><p>気になる街を選ぶと、その街のお店を検索できます。</p></div></div>
+  <div class="cities">
+   <a href="index.html#search">札幌市 <small>味噌</small></a>
+   <a href="index.html#search">旭川市 <small>醤油</small></a>
+   <a href="index.html#search">函館市 <small>塩</small></a>
+   <a href="index.html#search">釧路市 <small>醤油</small></a>
+   <a href="index.html#search">小樽市 <small>醤油・塩</small></a>
+   <a href="index.html#search">帯広市 <small>醤油</small></a>
+  </div>
+ </div>
+</section>
+
+<section>
+ <div class="wrap">
+  <div class="sh"><svg class="ic"><use href="#book"/></svg><div><small>GUIDE</small><h2>北海道でラーメンを楽しむコツ</h2></div></div>
+  <div class="tips">
+   <div class="card"><h3>街をまたぐなら味を決めて</h3><p>札幌・旭川・函館は車や電車での移動が長め。食べたい味から先に街を選ぶと、無理のない旅程になります。</p></div>
+   <div class="card"><h3>人気店は時間をずらす</h3><p>昼のピークは行列になりがち。開店直後か、14時以降の時間帯だと待ち時間が短くなることがあります。</p></div>
+   <div class="card"><h3>冬の移動に備える</h3><p>積雪や凍結で、電車やバスが遅れることがあります。営業時間と定休日は、出かける前にお店の最新情報で確認してください。</p></div>
+  </div>
+ </div>
+</section>
+
+<section>
+ <div class="wrap">
+  <div class="other">
+   <a class="btn red" href="index.html#search"><svg class="ic"><use href="#srch"/></svg>北海道のお店を検索する</a>
+   <a class="btn out" href="area.html">ほかのエリアを見る <svg class="ic"><use href="#arr"/></svg></a>
+  </div>
+ </div>
+</section>
+</main>
+
+<footer>
+ <div class="wrap">
+  <div class="ft">
+   <div><a class="logo" href="index.html"><svg class="ic" style="color:#fff"><use href="#bowl"/></svg><b style="font-size:17px">全国ラーメンランキング <svg class="ic c"><use href="#crown"/></svg></b></a>
+    <p class="about">全国のラーメン店と、ラーメンを愛する人をつなぐ情報サイト。<br>今日の一杯から、旅先で出会う特別な一杯まで。<br>ラーメンの楽しさとおいしさを、全国へ。</p></div>
+   <div><h4>サイトメニュー</h4><ul><li><a href="index.html#ranking">全国ランキング</a></li><li><a href="area.html">エリアから探す</a></li><li><a href="index.html#type">ラーメンの種類</a></li><li><a href="index.html#feature">ラーメン特集</a></li></ul></div>
+   <div><h4>その他</h4><ul><li><a href="review.html">口コミ・レビュー</a></li><li><a href="keisai.html">掲載店舗について</a></li><li><a href="otoiawase.html">お問い合わせ</a></li><li><a href="privacy.html">プライバシーポリシー</a></li></ul></div>
+   <div class="sns"><a href="#" aria-label="X">𝕏</a><a href="#" aria-label="Instagram">◎</a><a href="#" aria-label="YouTube">▶</a><button id="top" aria-label="ページ上部へ">︿</button></div>
+  </div>
+  <p class="copy">© 全国ラーメンランキング. All Right Reserved.</p>
+ </div>
+</footer>
+
+<script>
+(function(){
+ var $=function(s){return document.querySelector(s)};
+ var nav=$('#nav'),mb=$('#menuBtn');
+ mb.addEventListener('click',function(){var o=nav.classList.toggle('open');mb.setAttribute('aria-expanded',o)});
+ nav.addEventListener('click',function(e){if(e.target.tagName==='A'){nav.classList.remove('open');mb.setAttribute('aria-expanded',false)}});
+ $('#top').addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+})();
+</script>
+</body>
+</html>

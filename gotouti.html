@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>地元民がお勧めするご当地ラーメン | 全国ラーメンランキング</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700;900&display=swap">
+<style>
+/* Extended styles for Gotouchi Ramen Page */
+.gotouchi-hero {
+  position: relative;
+  background: #19120e;
+  color: #fff;
+  padding: 48px 0;
+  overflow: hidden;
+  border-bottom: 3px solid var(--red);
+}
+.gotouchi-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 80% 50%, rgba(196, 22, 28, 0.25), transparent 70%);
+  pointer-events: none;
+}
+.badge-local {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--red);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 3px;
+  letter-spacing: 0.05em;
+}
+.badge-rate {
+  background: #e9b949;
+  color: #1a1008;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 3px;
+}
+
+/* Filter Navigation */
+.region-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-bottom: 24px;
+  scrollbar-width: thin;
+}
+.region-tab {
+  background: var(--card);
+  border: 1px solid var(--line);
+  color: var(--text);
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+.region-tab:hover, .region-tab.active {
+  background: var(--red);
+  color: #fff;
+  border-color: var(--red);
+  box-shadow: 0 2px 8px rgba(196, 22, 28, 0.3);
+}
+
+/* Ramen Grid Cards */
+.ramen-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+.ramen-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.ramen-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.15);
+}
+.ramen-img-wrap {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+.ramen-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.ramen-card:hover .ramen-img-wrap img {
+  transform: scale(1.05);
+}
+.ramen-badges {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  z-index: 2;
+}
+.ramen-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.ramen-area {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.ramen-title {
+  font: 700 18px/1.3 "Noto Serif JP", serif;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+.ramen-specs {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 12px;
+  background: var(--alt);
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  margin-bottom: 12px;
+}
+.ramen-specs dt {
+  color: var(--muted);
+  font-weight: 700;
+}
+.ramen-specs dd {
+  margin: 0;
+  color: var(--text);
+  font-weight: 500;
+}
+.local-comment {
+  position: relative;
+  background: rgba(233, 185, 73, 0.08);
+  border-left: 3px solid var(--gold);
+  padding: 10px 12px;
+  font-size: 12px;
+  line-height: 1.6;
+  border-radius: 0 4px 4px 0;
+  margin-bottom: 14px;
+  color: var(--text);
+}
+.local-comment strong {
+  display: block;
+  font-size: 10.5px;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+.shops-list {
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px dashed var(--line);
+  font-size: 11.5px;
+}
+.shops-list header {
+  position: static;
+  background: transparent;
+  border: 0;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 4px;
+  height: auto;
+}
+.shops-list ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.shops-list li {
+  background: var(--alt);
+  border: 1px solid var(--line);
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-weight: 500;
+}
+
+/* Trivia Section */
+.trivia-box {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 20px;
+  height: 100%;
+}
+.trivia-box h3 {
+  font: 700 16px "Noto Serif JP", serif;
+  color: var(--red);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.modal-content {
+  background: var(--card);
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 8px;
+  padding: 24px;
+  position: relative;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+}
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: var(--alt);
+  border: 0;
+  font-size: 20px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Submission Form */
+.recommend-form {
+  background: var(--card);
+  border: 1px solid var(--line);
+  padding: 24px;
+  border-radius: 8px;
+}
+.form-group {
+  margin-bottom: 14px;
+}
+.form-group label {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.form-control {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--text);
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 13px;
+}
+textarea.form-control {
+  resize: vertical;
+  min-height: 80px;
+}
+</style>
+</head>
+<body>
+
+<!-- SVG Icons definitions -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="crown" viewBox="0 0 24 24"><path d="M2 19h20l1-11-6 5-5-9-5 9-6-5z" fill="currentColor"/></symbol>
+  <symbol id="bowl" viewBox="0 0 40 40"><path d="M4 18h32a16 16 0 0 1-32 0z" fill="currentColor"/><path d="M12 14c4-3 10-3 16 0M14 9l16-5M13 11l17-5" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/></symbol>
+  <symbol id="pin" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" fill="currentColor"/></symbol>
+  <symbol id="srch" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15 15l6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+  <symbol id="chev" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="arr" viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="star" viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7.2-6.3-3.7-6.3 3.7 1.6-7.2L2 9.6 9 9z" fill="currentColor"/></symbol>
+  <symbol id="menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="heart" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="currentColor"/></symbol>
+  <symbol id="bulb" viewBox="0 0 24 24"><path d="M12 2A7 7 0 0 0 5 9c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7zm-3 18a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1z" fill="currentColor"/></symbol>
+</svg>
+
+<!-- Header -->
+<header>
+ <div class="wrap hd">
+  <a class="logo" href="index.html">
+   <svg class="ic"><use href="#bowl"/></svg>
+   <span><b>全国<i>ラーメン</i>ランキング <svg class="ic c"><use href="#crown"/></svg></b><small>日本全国のうまいラーメンを、ランキングで紹介</small></span>
+  </a>
+  <nav id="nav">
+   <a href="index.html">ホーム</a>
+   <a href="index.html#ranking">ランキング</a>
+   <a href="index.html#area">エリアから探す</a>
+   <a href="index.html#type">ラーメンの種類</a>
+   <a href="gotouchi.html" style="color:var(--red); font-weight:700;">ご当地ラーメン</a>
+   <a href="index.html#review">口コミ・レビュー</a>
+  </nav>
+  <span class="sp"></span>
+  <a class="hbtn" href="index.html#search" aria-label="検索"><svg class="ic"><use href="#srch"/></svg></a>
+  <button class="hbtn" id="menuBtn" aria-label="メニュー" aria-expanded="false"><svg class="ic"><use href="#menu"/></svg></button>
+ </div>
+</header>
+
+<main>
+ <!-- Hero Section -->
+ <div class="gotouchi-hero">
+  <div class="wrap">
+   <p style="font-size:12px; font-weight:700; color:var(--gold); letter-spacing:0.15em; margin-bottom:4px;">LOCAL FAVORITES</p>
+   <h1 class="serif" style="font-size:32px; font-weight:900; line-height:1.3; margin-bottom:12px;">地元民が愛してやまない<br><span style="color:var(--gold);">ご当地ラーメン</span>名鑑</h1>
+   <p style="font-size:13px; color:#d8c9bd; max-width:580px; line-height:1.8;">
+    観光地の有名店から、地元住民が長年通い詰めるソウルフードまで。<br>
+    その土地の気候や文化が育んだ、一度は訪れたい全国各地の伝統的な一杯をご紹介します。
+   </p>
+  </div>
+ </div>
+
+ <!-- Main Content Section -->
+ <section>
+  <div class="wrap">
+   <!-- Region Tabs Filter -->
+   <div class="region-tabs" id="regionTabs">
+    <button class="region-tab active" data-region="all">すべて表示</button>
+    <button class="region-tab" data-region="hokkaido-tohoku">北海道・東北</button>
+    <button class="region-tab" data-region="kanto-chubu">関東・中部</button>
+    <button class="region-tab" data-region="kansai-chugoku">近畿・中国・四国</button>
+    <button class="region-tab" data-region="kyushu">九州・沖縄</button>
+   </div>
+
+   <!-- Ramen Grid Container -->
+   <div class="ramen-grid" id="ramenGrid">
+
+    <!-- Card 1: 札幌味噌ラーメン -->
+    <article class="ramen-card" data-region="hokkaido-tohoku">
+     <div class="ramen-img-wrap">
+      <div class="ramen-badges">
+       <span class="badge-local"><svg class="ic" style="width:12px;height:12px;"><use href="#heart"/></svg> 地元愛着度 99%</span>
+       <span class="badge-rate">ソウルフード</span>
+      </div>
+      <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80" alt="札幌味噌ラーメン" onerror="this.src='https://placehold.co/600x375/2a2320/f2e9e2?text=札幌味噌ラーメン'">
+     </div>
+     <div class="ramen-body">
+      <div class="ramen-area"><svg class="ic"><use href="#pin"/></svg> 北海道 札幌市</div>
+      <h2 class="ramen-title">札幌味噌ラーメン</h2>
+      <dl class="ramen-specs">
+       <dt>スープ</dt><dd>濃厚豚骨＋香ばしい純米味噌</dd>
+       <dt>　麺　</dt><dd>中太多加水ちぢれ黄色麺</dd>
+       <dt>具　材</dt><dd>炒めもやし、玉ねぎ、挽肉、メンマ</dd>
+      </dl>
+      <div class="local-comment">
+       <strong>地元民の推しコメント</strong>
+       「極寒の冬にラードの膜で覆われた熱々スープを啜るのが最高。ラードがフタをするから最後まで冷めないのが地元流！」
+      </div>
+      <div class="shops-list">
+       <header>代表的な地元有名店</header>
+       <ul>
+        <li>すみれ</li>
+        <li>麺屋 彩未</li>
+        <li>信玄</li>
+       </ul>
+      </div>
+      <button class="btn line" style="margin-top:14px; width:100%; border-color:var(--line); color:var(--text); background:var(--alt);" onclick="openModal('sapporo')">詳細とこだわりを見る</button>
+     </div>
+    </article>
+
+    <!-- Card 2: 喜多方ラーメン -->
+    <article class="ramen-card" data-region="hokkaido-tohoku">
+     <div class="ramen-img-wrap">
+      <div class="ramen-badges">
+       <span class="badge-local"><svg class="ic" style="width:12px;height:12px;"><use href="#heart"/></svg> 朝ラー文化</span>
+       <span class="badge-rate">日本三大ラーメン</span>
+      </div>
+      <img src="https://images.unsplash.com/photo-1591814468924-caf88d1232e1?auto=format&fit=crop&w=600&q=80" alt="喜多方ラーメン" onerror="this.src='https://placehold.co/600x375/2a2320/f2e9e2?text=喜多方ラーメン'">
+     </div>
+     <div class="ramen-body">
+      <div class="ramen-area"><svg class="ic"><use href="#pin"/></svg> 福島県 喜多方市</div>
+      <h2 class="ramen-title">喜多方ラーメン</h2>
+      <dl class="ramen-specs">
+       <dt>スープ</dt><dd>豚骨と煮干しのすっきり澄んだ醤油</dd>
+       <dt>　麺　</dt><dd>平打ち熟成多加水ちぢれ麺</dd>
+       <dt>具　材</dt><dd>一面を覆うトロトロトロ豚チャーシュー</dd>
+      </dl>
+      <div class="local-comment">
+       <strong>地元民の推しコメント</strong>
+       「朝7時から食べる『朝ラー』が日常生活。モチモチの平打ち麺にあっさりスープが絡んで、毎日食べても飽きません。」
+      </div>
+      <div class="shops-list">
+       <header>代表的な地元有名店</header>
+       <ul>
+        <li>坂内食堂</li>
+        <li>まこと食堂</li>
+        <li>食堂はせ川</li>
+       </ul>
+      </div>
+      <button class="btn line" style="margin-top:14px; width:100%; border-color:var(--line); color:var(--text); background:var(--alt);" onclick="openModal('kitakata')">詳細とこだわりを見る</button>
+     </div>
+    </article>
+
+    <!-- Card 3: 燕三条背脂ラーメン -->
+    <article class="ramen-card" data-region="kanto-chubu">
+     <div class="ramen-img-wrap">
+      <div class="ramen-badges">
+       <span class="badge-local"><svg class="ic" style="width:12px;height:12px;"><use href="#heart"/></svg> がっつり系</span>
+       <span class="badge-rate">職人の味</span>
+      </div>
+      <img src="https://images.unsplash.com/photo-1618183479302-1e0aa382c36b?auto=format&fit=crop&w=600&q=80" alt="燕三条背脂ラーメン" onerror="this.src='https://placehold.co/600x375/2a2320/f2e9e2?text=燕三条背脂ラーメン'">
+     </div>
+     <div class="ramen-body">
+      <div class="ramen-area"><svg class="ic"><use href="#pin"/></svg> 新潟県 燕市・三条市</div>
+      <h2 class="ramen-title">燕三条背脂ラーメン</h2>
+      <dl class="ramen-specs">
+       <dt>スープ</dt><dd>煮干し醤油＋極上質のビッシリ背脂</dd>
+       <dt>　麺　</dt><dd>うどんのような超極太うねり麺</dd>
+       <dt>具　材</dt><dd>生刻み玉ねぎ、メンマ、チャーシュー</dd>
+      </dl>
+      <div class="local-comment">
+       <strong>地元民の推しコメント</strong>
+       「洋食器職人に届ける出前文化から生まれた一杯。背脂の甘みと刻み玉ねぎのシャキシャキ感が完璧なアクセント！」
+      </div>
+      <div class="shops-list">
+       <header>代表的な地元有名店</header>
+       <ul>
+        <li>杭州飯店</li>
+        <li>まつや食堂</li>
+        <li>酒麺亭 潤</li>
+       </ul>
+      </div>
+      <button class="btn line" style="margin-top:14px; width:100%; border-color:var(--line); color:var(--text); background:var(--alt);" onclick="openModal('tsubame')">詳細とこだわりを見る</button>
+     </div>
+    </article>
+
+    <!-- Card 4: 和歌山ラーメン -->
+    <article class="ramen-card" data-region="kansai-chugoku">
+     <div class="ramen-img-wrap">
+      <div class="ramen-badges">
+       <span class="badge-local"><svg class="ic" style="width:12px;height:12px;"><use href="#heart"/></svg> 中華そば</span>
+       <span class="badge-rate">早すし文化</span>
+      </div>
+      <img src="https://images.unsplash.com/photo-1552611052-33e04de081de?auto=format&fit=crop&w=600&q=80" alt="和歌山ラーメン" onerror="this.src='https://placehold.co/600x375/2a2320/f2e9e2?text=和歌山ラーメン'">
+     </div>
+     <div class="ramen-body">
+      <div class="ramen-area"><svg class="ic"><use href="#pin"/></svg> 和歌山県 和歌山市</div>
+      <h2 class="ramen-title">和歌山ラーメン（井出系）</h2>
+      <dl class="ramen-specs">
+       <dt>スープ</dt><dd>まろやか濃厚豚骨醤油（井出系）</dd>
+       <dt>　麺　</dt><dd>パツッとしたストレート細麺</dd>
+       <dt>具　材</dt><dd>チャーシュー、千代巻かまぼこ、ネギ</dd>
+      </dl>
+      <div class="local-comment">
+       <strong>地元民の推しコメント</strong>
+       「テーブルに置いてある鯖の『早すし』をつまみながらラーメンを待つのが和歌山スタイル。コク深いスープと酢飯が合います。」
+      </div>
+      <div class="shops-list">
+       <header>代表的な地元有名店</header>
+       <ul>
+        <li>井出商店</li>
+        <li>丸三</li>
+        <li>山為食堂</li>
+       </ul>
+      </div>
+      <button class="btn line" style="margin-top:14px; width:100%; border-color:var(--line); color:var(--text); background:var(--alt);" onclick="openModal('wakayama')">詳細とこだわりを見る</button>
+     </div>
+    </article>
+
+    <!-- Card 5: 徳島ラーメン -->
+    <article class="ramen-card" data-region="kansai-chugoku">
+     <div class="ramen-img-wrap">
+      <div class="ramen-badges">
+       <span class="badge-local"><svg class="ic" style="width:12px;height:12px;"><use href="#heart"/></svg> ご飯のおかず</span>
+       <span class="badge-rate">甘辛すき焼き風</span>
+      </div>
+      <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80" alt="徳島ラーメン" onerror="this.src='https://placehold.co/600x375/2a2320/f2e9e2?text=徳島ラーメン'">
+     </div>
+     <div class="ramen-body">
+      <div class="ramen-area"><svg class="ic"><use href="#pin"/></svg> 徳島県 徳島市</div>
+      <h2 class="ramen-title">徳島ラーメン（黒系）</h2>
+      <dl class="ramen-specs">
+       <dt>スープ</dt><dd>濃口醤油×豚骨の甘辛濃厚スープ</dd>
+       <dt>　麺　</dt><dd>短めの中細ストレート麺</dd>
+       <dt>具　材</dt><dd>甘辛く煮た豚バラ肉、生卵、もやし</dd>
+      </dl>
+      <div class="local-comment">
+       <strong>地元民の推しコメント</strong>
+       「徳島ラーメンはおかずです！白ご飯を一緒に注文して、生卵を絡めた豚バラ肉をバウンドさせて食べるのが最高の贅沢です。」
+      </div>
+      <div class="shops-list">
+       <header>代表的な地元有名店</header>
+       <ul>
+        <li>中華そば いのたに</li>
+        <li>ラーメン東大</li>
+        <li>王王軒</li>
+       </ul>
+      </div>
+      <button class="btn line" style="margin-top:14px; width:100%; border-color:var(--line); color:var(--text); background:var(--alt);" onclick="openModal('tokushima')">詳細とこだわりを見る</button>
+     </div>
+    </article>
+
+    <!-- Card 6: 博多豚骨ラーメン -->
+    <article class="ramen-card" data-region="kyushu">
+     <div class="ramen-img-wrap">
+      <div class="ramen-badges">
+       <span class="badge-local"><svg class="ic" style="width:12px;height:12px;"><use href="#heart"/></svg> バリカタ・替え玉</span>
+       <span class="badge-rate">定番名物</span>
+      </div>
+      <img src="https://images.unsplash.com/photo-1526318896980-cf78c088247c?auto=format&fit=crop&w=600&q=80" alt="博多豚骨ラーメン" onerror="this.src='https://placehold.co/600x375/2a2320/f2e9e2?text=博多豚骨ラーメン'">
+     </div>
+     <div class="ramen-body">
+      <div class="ramen-area"><svg class="ic"><use href="#pin"/></svg> 福岡県 福岡市</div>
+      <h2 class="ramen-title">博多長浜豚骨ラーメン</h2>
+      <dl class="ramen-specs">
+       <dt>スープ</dt><dd>白濁した濃厚豚骨（泡系・クリア系も）</dd>
+       <dt>　麺　</dt><dd>極細ストレート低加水麺</dd>
+       <dt>具　材</dt><dd>青ネギ、チャーシュー、紅生姜、ゴマ</dd>
+      </dl>
+      <div class="local-comment">
+       <strong>地元民の推しコメント</strong>
+       「注文は『カタ』で着丼まで数十秒！一杯目はシンプルにそのまま、替え玉（固め）をしてから高菜と紅生姜で味変が鉄則です。」
+      </div>
+      <div class="shops-list">
+       <header>代表的な地元有名店</header>
+       <ul>
+        <li>元祖長浜屋</li>
+        <li>博多一双</li>
+        <li>ShinShin</li>
+       </ul>
+      </div>
+      <button class="btn line" style="margin-top:14px; width:100%; border-color:var(--line); color:var(--text); background:var(--alt);" onclick="openModal('hakata')">詳細とこだわりを見る</button>
+     </div>
+    </article>
+
+   </div>
+  </div>
+ </section>
+
+ <!-- Local Trivia Section -->
+ <section style="background:var(--alt); padding:36px 0;">
+  <div class="wrap">
+   <div class="sh">
+    <svg class="ic"><use href="#bulb"/></svg>
+    <div>
+     <small>KNOWLEDGE</small>
+     <h2>ご当地ラーメンをもっと味わう豆知識</h2>
+     <p>知っておくと現地でのラーメン巡りがさらに楽しくなるローカルルール＆雑学</p>
+    </div>
+   </div>
+   
+   <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:18px; margin-top:20px;">
+    <div class="trivia-box">
+     <h3><svg class="ic"><use href="#bowl"/></svg> 「朝ラー」文化ってなに？</h3>
+     <p style="font-size:12px; line-height:1.7; color:var(--text);">
+      喜多方市や静岡県志太地域では、早朝からラーメン店が開店し、朝食にラーメンを食べる文化が存在します。夜勤明けの職人や早朝作業の農家を支えるために始まった伝統的な食習慣です。
+     </p>
+    </div>
+    <div class="trivia-box">
+     <h3><svg class="ic"><use href="#bowl"/></svg> 福岡の「長浜」と「博多」の違い</h3>
+     <p style="font-size:12px; line-height:1.7; color:var(--text);">
+      競り市場の労働者向けに超高速で提供できるよう開発されたのが極細麺＆替え玉の「長浜ラーメン」。対して博多ラーメンはやや太めの細麺でじっくり炊くのが特徴でしたが、現在は融合しています。
+     </p>
+    </div>
+    <div class="trivia-box">
+     <h3><svg class="ic"><use href="#bowl"/></svg> 卓上アイテムのローカルルール</h3>
+     <p style="font-size:12px; line-height:1.7; color:var(--text);">
+      和歌山ではテーブルの「早すし・ゆで卵」を勝手に食べて後で自己申告。熊本では「黒マー油・ニンニクチップ」、新潟では「生玉ねぎ」など、地域独自の味変アイテムが用意されています。
+     </p>
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <!-- User Recommendation Submission Form -->
+ <section style="padding:40px 0;">
+  <div class="wrap">
+   <div style="max-width:680px; margin:0 auto;">
+    <div class="sh" style="text-align:center; display:block; margin-bottom:20px;">
+     <small style="color:var(--red); font-weight:700;">RECOMMENDATION</small>
+     <h2 style="font-size:22px;">あなたの街の「推しご当地ラーメン」を教えてください！</h2>
+     <p>地元民しか知らない隠れた名店や、愛される理由をぜひ教えてください。</p>
+    </div>
+
+    <form class="recommend-form" id="recommendForm">
+     <div class="form-group">
+      <label for="recRegion">都道府県・地域</label>
+      <input type="text" id="recRegion" class="form-control" placeholder="例：山形県米沢市" required>
+     </div>
+     <div class="form-group">
+      <label for="recRamenName">ご当地ラーメン名・店名</label>
+      <input type="text" id="recRamenName" class="form-control" placeholder="例：米沢ラーメン / 〇〇食堂" required>
+     </div>
+     <div class="form-group">
+      <label for="recReason">地元民としてのおすすめ理由・魅力</label>
+      <textarea id="recReason" class="form-control" placeholder="例：あっさりした煮干しスープと細手もみ縮れ麺が最高です！地元の人はみんな週1で通っています。" required></textarea>
+     </div>
+     <div class="form-group">
+      <label for="recNickname">ニックネーム（任意）</label>
+      <input type="text" id="recNickname" class="form-control" placeholder="例：麺好き通りすがり">
+     </div>
+     <button type="submit" class="btn red" style="width:100%; padding:12px; margin-top:8px;">推しラーメンを投稿する <svg class="ic"><use href="#arr"/></svg></button>
+    </form>
+   </div>
+  </div>
+ </section>
+</main>
+
+<!-- Detail Modal Component -->
+<div class="modal-overlay" id="detailModal" onclick="closeModal(event)">
+ <div class="modal-content" onclick="event.stopPropagation()">
+  <button class="modal-close" onclick="closeModalDirect()">&times;</button>
+  <div id="modalBody">
+   <!-- Content populated dynamically -->
+  </div>
+ </div>
+</div>
+
+<!-- Footer -->
+<footer>
+ <div class="wrap">
+  <div class="ft">
+   <div>
+    <a class="logo" href="index.html">
+     <svg class="ic" style="color:#fff"><use href="#bowl"/></svg>
+     <b style="font-size:17px">全国ラーメンランキング <svg class="ic c"><use href="#crown"/></svg></b>
+    </a>
+    <p class="about">全国のラーメン店と、ラーメンを愛する人をつなぐ情報サイト。<br>今日の一杯から、旅先で出会う特別な一杯まで。<br>ラーメンの楽しさとおいしさを、全国へ。</p>
+   </div>
+   <div>
+    <h4>サイトメニュー</h4>
+    <ul>
+     <li><a href="index.html#ranking">全国ランキング</a></li>
+     <li><a href="index.html#area">エリアから探す</a></li>
+     <li><a href="index.html#type">ラーメンの種類</a></li>
+     <li><a href="gotouchi.html">ご当地ラーメン特集</a></li>
+    </ul>
+   </div>
+   <div>
+    <h4>その他</h4>
+    <ul>
+     <li><a href="index.html#review">口コミ・レビュー</a></li>
+     <li><a href="#">掲載店舗について</a></li>
+     <li><a href="#">お問い合わせ</a></li>
+     <li><a href="#">プライバシーポリシー</a></li>
+    </ul>
+   </div>
+   <div class="sns">
+    <a href="#" aria-label="X">𝕏</a>
+    <a href="#" aria-label="Instagram">◎</a>
+    <a href="#" aria-label="YouTube">▶</a>
+    <button id="top" aria-label="ページ上部へ">︿</button>
+   </div>
+  </div>
+  <p class="copy">© 全国ラーメンランキング. All Right Reserved.</p>
+ </div>
+</footer>
+
+<div id="toast"></div>
+
+<!-- JavaScript Logic -->
+<script>
+(function(){
+  // Navigation Menu Toggle
+  var nav = document.getElementById('nav');
+  var menuBtn = document.getElementById('menuBtn');
+  menuBtn.addEventListener('click', function(){
+    var open = nav.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open);
+  });
+
+  // Region Filter Functionality
+  var tabs = document.querySelectorAll('.region-tab');
+  var cards = document.querySelectorAll('.ramen-card');
+
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      tabs.forEach(function(t) { t.classList.remove('active'); });
+      this.classList.add('active');
+
+      var targetRegion = this.getAttribute('data-region');
+
+      cards.forEach(function(card) {
+        if (targetRegion === 'all' || card.getAttribute('data-region') === targetRegion) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // Toast Functionality
+  var toastEl = document.getElementById('toast');
+  var toastTimer;
+  window.showToast = function(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){
+      toastEl.classList.remove('on');
+    }, 2500);
+  };
+
+  // Form Submission Handler
+  var form = document.getElementById('recommendForm');
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var ramenName = document.getElementById('recRamenName').value;
+    showToast('「' + ramenName + '」の情報を投稿しました！ご協力ありがとうございます。');
+    form.reset();
+  });
+
+  // Top Smooth Scroll
+  document.getElementById('top').addEventListener('click', function(){
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+})();
+
+// Modal Details Data
+var modalDetails = {
+  sapporo: {
+    title: "札幌味噌ラーメン",
+    region: "北海道 札幌市",
+    desc: "1950年代に札幌の「味の三平」で考案されたのが始まりとされる、日本を代表する味噌ラーメン。高火力の油と炒めたもやしや挽肉の旨味が溶け込んだスープが極上のコクを生み出します。",
+    point: "純米味噌をベースにした濃厚な味わいと、黄色い中太縮れ麺のもっちり感が特徴。表面の厚いラードの膜がスープの熱さを長時間閉じ込めます。"
+  },
+  kitakata: {
+    title: "喜多方ラーメン",
+    region: "福島県 喜多方市",
+    desc: "人口あたりのラーメン店舗数が日本屈指のラーメンの街・喜多方。「平打ち熟成多加水麺」と呼ばれる独特の縮れ麺は、水分の含有量が高くツルツルモチモチの独特な歯応えです。",
+    point: "スープは豚骨や煮干しをベースとしたすっきり醤油味が主流。『朝ラー』の言葉の通り、朝からさらっと食べられる親しみやすさが魅力です。"
+  },
+  tsubame: {
+    title: "燕三条背脂ラーメン",
+    region: "新潟県 燕市・三条市",
+    desc: "金属加工の町として知られる燕三条で、夜遅くまで働く工場職人たちに出前を届けるため発祥したラーメン。スープが冷めないよう大量の豚背脂でフタをし、太い麺で伸びにくく工夫されています。",
+    point: "煮干しの利いた濃い口醤油スープに背脂の甘みがベストマッチ。極太麺と刻み生玉ねぎの清涼感が絶妙なバランスです。"
+  },
+  wakayama: {
+    title: "和歌山ラーメン",
+    region: "和歌山県 和歌山市",
+    desc: "地元では「中華そば」の愛称で親しまれています。豚骨を強火で煮込んだコク深い「豚骨醤油」系と、澄んだ「醤油」系の2系統が存在します。",
+    point: "店内に置かれた「早すし（鯖の押し寿司）」やゆで卵を食べながら待ち、会計時に自己申告するのが昔からのローカルルールです。"
+  },
+  tokushima: {
+    title: "徳島ラーメン",
+    region: "徳島県 徳島市",
+    desc: "濃口醤油と豚骨で煮込んだ甘辛いスープ（黒系）が特に有名。トッピングにはチャーシューではなく、甘辛く炒めた豚バラ肉が乗るのが最大の特徴です。",
+    point: "「ラーメンはおかず」として白ご飯と一緒に食べるのが地元流。生卵をスープに溶いてすき焼き風に食べるのが大人気です。"
+  },
+  hakata: {
+    title: "博多長浜豚骨ラーメン",
+    region: "福岡県 福岡市",
+    desc: "強火で極限まで炊き上げた白濁豚骨スープと、極細ストレート麺がアイコン。短時間で麺を茹で上げられるため、市場の多忙な労働者に親しまれました。",
+    point: "麺の硬さ指定（カタ・バリカタ・ハリガネなど）や「替え玉」システム、卓上の紅生姜や辛高菜でのカスタマイズが醍醐味です。"
+  }
+};
+
+function openModal(key) {
+  var data = modalDetails[key];
+  if (!data) return;
+  var html = '<div class="ramen-area" style="font-size:12px; font-weight:700; color:var(--red); margin-bottom:6px;"><svg class="ic"><use href="#pin"/></svg> ' + data.region + '</div>' +
+             '<h2 class="serif" style="font-size:22px; font-weight:900; margin-bottom:12px; color:var(--text);">' + data.title + '</h2>' +
+             '<p style="font-size:13px; line-height:1.8; color:var(--text); margin-bottom:16px;">' + data.desc + '</p>' +
+             '<div style="background:var(--alt); padding:14px; border-radius:6px; border-left:3px solid var(--gold); font-size:12px; line-height:1.7;">' +
+             '<strong style="display:block; font-size:11px; color:var(--muted); margin-bottom:4px;">地元ならではのこだわりポイント</strong>' + data.point + '</div>' +
+             '<button class="btn red" style="margin-top:20px; width:100%;" onclick="closeModalDirect()">閉じる</button>';
+  document.getElementById('modalBody').innerHTML = html;
+  document.getElementById('detailModal').classList.add('open');
+}
+
+function closeModal(e) {
+  if (e.target.id === 'detailModal') {
+    document.getElementById('detailModal').classList.remove('open');
+  }
+}
+
+function closeModalDirect() {
+  document.getElementById('detailModal').classList.remove('open');
+}
+</script>
+</body>
+</html>

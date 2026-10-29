@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>お問い合わせ｜全国ラーメンランキング</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700;900&display=swap">
+<style>
+/* お問い合わせページ専用 */
+.phead{background:var(--alt);border-bottom:1px solid var(--line);padding:22px 0 26px}
+.crumb{display:flex;gap:8px;align-items:center;font-size:11px;color:var(--muted);margin-bottom:12px}
+.crumb a:hover{color:var(--red)}
+.crumb .ic{width:10px;height:10px}
+.phead h1{font:900 30px/1.4 "Noto Serif JP",serif;letter-spacing:.08em}
+.phead p{font-size:12px;color:var(--muted);margin-top:6px}
+.cpage{padding:32px 0 8px}
+.cgrid{display:grid;grid-template-columns:1.6fr 1fr;gap:36px;align-items:start}
+.cf{display:grid;gap:20px;border:0;padding:0;grid-template-columns:1fr}
+.cf[hidden],.done[hidden]{display:none}
+.cf label{font-size:12.5px;margin-bottom:6px}
+.cf select,.cf input[type=text],.cf input[type=email],.cf textarea{font-size:15px;height:44px}
+.cf textarea{display:block;width:100%;min-height:170px;padding:10px;line-height:1.7;resize:vertical;font:15px/1.7 "Noto Sans JP",sans-serif;border:1px solid var(--line);border-radius:3px;background:var(--card);color:var(--text)}
+.cf :user-invalid{border-color:var(--red)}
+.req,.opt{display:inline-block;margin-left:8px;padding:0 6px;font-size:10px;font-weight:500;line-height:18px;border-radius:2px;vertical-align:1px}
+.req{background:var(--red);color:#fff}
+.opt{border:1px solid var(--line);color:var(--muted)}
+.hint{font-size:11px;color:var(--muted);margin-top:4px}
+.cf .agree{display:flex;gap:10px;align-items:flex-start;font-weight:400;margin:0}
+.cf .agree input{width:18px;height:18px;margin-top:2px;padding:0;accent-color:var(--red);flex:none}
+.cf .agree a{color:var(--red);border-bottom:1px solid currentColor}
+.cf .btn{height:48px;font-size:14px;width:100%}
+.side{border-left:1px solid var(--line);padding-left:28px}
+.side h2{font:700 16px/1.5 "Noto Serif JP",serif;letter-spacing:.06em;margin-bottom:14px}
+.side dt{font-size:12.5px;font-weight:700}
+.side dd{margin:2px 0 16px;font-size:12px;line-height:1.8;color:var(--muted)}
+.side dd a{color:var(--red);border-bottom:1px solid currentColor}
+.side .note{font-size:11px;color:var(--muted);line-height:1.8;padding-top:14px;border-top:1px solid var(--line)}
+.done{grid-column:1;padding:28px;text-align:center}
+.done:focus{outline:none}
+.done .ic{width:44px;height:44px;color:var(--red)}
+.done h2{font:700 20px/1.5 "Noto Serif JP",serif;letter-spacing:.06em;margin:8px 0}
+.done p{font-size:12.5px;color:var(--muted);line-height:1.9}
+.done .btns{justify-content:center;margin-top:20px}
+.done .btn.out{background:transparent}
+@media(max-width:900px){
+ .cgrid{grid-template-columns:1fr;gap:28px}
+ .side{border:0;padding:24px 0 0;border-top:1px solid var(--line)}
+ .phead h1{font-size:24px}
+}
+@media(max-width:560px){.cf select,.cf input,.cf textarea{font-size:16px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="crown" viewBox="0 0 24 24"><path d="M2 19h20l1-11-6 5-5-9-5 9-6-5z" fill="currentColor"/></symbol>
+<symbol id="bowl" viewBox="0 0 40 40"><path d="M4 18h32a16 16 0 0 1-32 0z" fill="currentColor"/><path d="M12 14c4-3 10-3 16 0M14 9l16-5M13 11l17-5" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/></symbol>
+<symbol id="srch" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15 15l6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+<symbol id="chev" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="arr" viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ok" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 12.5l3.5 3.5L17 9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<header>
+ <div class="wrap hd">
+  <a class="logo" href="index.html">
+   <svg class="ic"><use href="#bowl"/></svg>
+   <span><b>全国<i>ラーメン</i>ランキング <svg class="ic c"><use href="#crown"/></svg></b><small>日本全国のうまいラーメンを、ランキングで紹介</small></span>
+  </a>
+  <nav id="nav">
+   <a href="index.html">ホーム</a><a href="index.html#ranking">ランキング</a><a href="area.html">エリアから探す</a><a href="index.html#type">ラーメンの種類</a><a href="index.html#feature">ラーメン特集</a><a href="index.html#review">口コミ・レビュー</a>
+  </nav>
+  <span class="sp"></span>
+  <a class="hbtn" href="index.html#search" aria-label="検索"><svg class="ic"><use href="#srch"/></svg></a>
+  <button class="hbtn" id="menuBtn" aria-label="メニュー" aria-expanded="false"><svg class="ic"><use href="#menu"/></svg></button>
+ </div>
+</header>
+
+<main>
+<div class="phead">
+ <div class="wrap">
+  <div class="crumb"><a href="index.html">ホーム</a><svg class="ic"><use href="#chev"/></svg><span>お問い合わせ</span></div>
+  <h1>お問い合わせ</h1>
+  <p>サイトへのご意見、掲載情報の修正、掲載のご相談などはこちらからお送りください。</p>
+ </div>
+</div>
+
+<div class="cpage">
+ <div class="wrap cgrid">
+  <div>
+   <form class="cf" id="cf">
+    <div>
+     <label for="ct">お問い合わせの種類<span class="req">必須</span></label>
+     <select id="ct" name="type" required>
+      <option value="">選択してください</option>
+      <option>サイトの内容・使い方について</option>
+      <option>掲載情報の修正・削除のお願い</option>
+      <option>店舗掲載のご相談</option>
+      <option>口コミ・レビューについて</option>
+      <option>その他</option>
+     </select>
+    </div>
+    <div>
+     <label for="cn">お名前<span class="req">必須</span></label>
+     <input id="cn" name="name" type="text" autocomplete="name" required placeholder="例：山田 太郎">
+    </div>
+    <div>
+     <label for="cm">メールアドレス<span class="req">必須</span></label>
+     <input id="cm" name="email" type="email" autocomplete="email" required placeholder="例：example@mail.com">
+     <p class="hint">返信はこのアドレス宛にお送りします。</p>
+    </div>
+    <div>
+     <label for="cs">店舗名<span class="opt">任意</span></label>
+     <input id="cs" name="shop" type="text" placeholder="例：麺や いちのはな（東京・新宿）">
+     <p class="hint">お店についてのお問い合わせの場合にご記入ください。</p>
+    </div>
+    <div>
+     <label for="cb">お問い合わせ内容<span class="req">必須</span></label>
+     <textarea id="cb" name="body" required maxlength="2000"></textarea>
+    </div>
+    <label class="agree"><input type="checkbox" id="cp" required><span><a href="#">プライバシーポリシー</a>に同意します</span></label>
+    <button class="btn red" type="submit">送信する</button>
+   </form>
+
+   <div class="done card" id="done" role="status" tabindex="-1" hidden>
+    <svg class="ic"><use href="#ok"/></svg>
+    <h2>送信しました</h2>
+    <p>「<span id="doneType"></span>」のお問い合わせを受け付けました。<br><span id="doneMail"></span> 宛に、内容を確認のうえご返信します。<br>（デモ表示のため、実際には送信されません）</p>
+    <div class="btns">
+     <a class="btn red" href="index.html">トップページへ戻る</a>
+     <button class="btn out" type="button" id="again">続けて入力する</button>
+    </div>
+   </div>
+  </div>
+
+  <aside class="side">
+   <h2>お問い合わせの前に</h2>
+   <dl>
+    <dt>口コミを投稿したいとき</dt>
+    <dd>口コミは専用ページから投稿できます。<a href="kutikomi.html">口コミを投稿する</a></dd>
+    <dt>お店の情報を直してほしいとき</dt>
+    <dd>お店の名前と、該当するページを内容欄に書いてください。</dd>
+    <dt>お店を掲載したいとき</dt>
+    <dd>掲載の条件は<a href="keisai.html">掲載店舗について</a>をご確認ください。</dd>
+   </dl>
+   <p class="note">お預かりした情報は、お問い合わせへの対応のみに使用します。</p>
+  </aside>
+ </div>
+</div>
+</main>
+
+<footer>
+ <div class="wrap">
+  <div class="ft">
+   <div><a class="logo" href="index.html"><svg class="ic" style="color:#fff"><use href="#bowl"/></svg><b style="font-size:17px">全国ラーメンランキング <svg class="ic c"><use href="#crown"/></svg></b></a>
+    <p class="about">全国のラーメン店と、ラーメンを愛する人をつなぐ情報サイト。<br>今日の一杯から、旅先で出会う特別な一杯まで。<br>ラーメンの楽しさとおいしさを、全国へ。</p></div>
+   <div><h4>サイトメニュー</h4><ul><li><a href="index.html#ranking">全国ランキング</a></li><li><a href="index.html#area">エリアから探す</a></li><li><a href="index.html#type">ラーメンの種類</a></li><li><a href="index.html#feature">ラーメン特集</a></li></ul></div>
+   <div><h4>その他</h4><ul><li><a href="review.html">口コミ・レビュー</a></li><li><a href="keisai.html">掲載店舗について</a></li><li><a href="otoiawase.html">お問い合わせ</a></li><li><a href="#">プライバシーポリシー</a></li></ul></div>
+   <div class="sns"><a href="#" aria-label="X">𝕏</a><a href="#" aria-label="Instagram">◎</a><a href="#" aria-label="YouTube">▶</a><button id="top" aria-label="ページ上部へ">︿</button></div>
+  </div>
+  <p class="copy">© 全国ラーメンランキング. All Right Reserved.</p>
+ </div>
+</footer>
+
+<script>
+(function(){
+ var $=function(s){return document.querySelector(s)};
+ var nav=$('#nav'),mb=$('#menuBtn');
+ mb.addEventListener('click',function(){var o=nav.classList.toggle('open');mb.setAttribute('aria-expanded',o)});
+ nav.addEventListener('click',function(e){if(e.target.tagName==='A'){nav.classList.remove('open');mb.setAttribute('aria-expanded',false)}});
+ var f=$('#cf'),done=$('#done');
+ f.addEventListener('submit',function(e){
+  e.preventDefault();
+  $('#doneType').textContent=$('#ct').value;
+  $('#doneMail').textContent=$('#cm').value.trim();
+  f.hidden=true;done.hidden=false;done.focus();
+  window.scrollTo({top:0,behavior:'smooth'});
+ });
+ $('#again').addEventListener('click',function(){
+  f.reset();done.hidden=true;f.hidden=false;$('#ct').focus();
+ });
+ $('#top').addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+})();
+</script>
+</body>
+</html>

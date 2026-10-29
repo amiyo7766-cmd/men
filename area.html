@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>エリアから探す｜全国ラーメンランキング</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700;900&display=swap">
+<style>
+/* エリアページ専用追加スタイル */
+.page-header {
+  background: var(--dark, #1f1f1f);
+  color: #fff;
+  padding: 40px 0 30px;
+  text-align: center;
+}
+.page-header h1 {
+  font: 900 32px/1.3 "Noto Serif JP", serif;
+  margin-bottom: 8px;
+}
+.page-header h1 span { color: var(--gold, #d4af37); }
+.page-header p { font-size: 13px; color: #d8c9bd; }
+
+/* タブナビゲーション */
+.area-tabs-wrap {
+  position: sticky;
+  top: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--line, #eee);
+  margin-bottom: 30px;
+}
+.area-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.tab-btn {
+  padding: 8px 16px;
+  background: var(--card, #fff);
+  border: 1px solid var(--line, #ddd);
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--text, #333);
+  transition: all 0.2s;
+}
+.tab-btn:hover, .tab-btn.active {
+  background: var(--red, #e63946);
+  color: #fff;
+  border-color: var(--red, #e63946);
+}
+
+/* 地域ブロック */
+.region-block {
+  margin-bottom: 50px;
+  scroll-margin-top: 80px;
+}
+.region-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 2px solid var(--gold, #d4af37);
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+}
+.region-title h2 {
+  font: 700 22px "Noto Serif JP", serif;
+  margin: 0;
+}
+
+/* 都道府県リスト */
+.pref-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.pref-card {
+  background: var(--card, #fff);
+  border: 1px solid var(--line, #e0e0e0);
+  padding: 10px 12px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+  font-size: 13px;
+  text-decoration: none;
+  color: var(--text, #333);
+  transition: all 0.2s ease;
+}
+.pref-card:hover {
+  border-color: var(--red, #e63946);
+  color: var(--red, #e63946);
+  background: var(--alt, #fff9f9);
+  transform: translateY(-2px);
+}
+.pref-card small {
+  color: var(--muted, #888);
+  font-size: 11px;
+}
+
+/* 人気店カードグリッド */
+.shop-section-title {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  color: var(--text, #333);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.area-shops {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.card {
+  display: block;
+  background: var(--card, #fff);
+  border: 1px solid var(--line, #eee);
+  border-radius: 8px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+.card img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  display: block;
+}
+.card .info {
+  padding: 12px;
+}
+.card .info b {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: var(--text, #222);
+}
+.card .info small {
+  display: block;
+  color: var(--muted, #666);
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+.card .score {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gold, #d4af37);
+}
+.card .score .ic {
+  width: 14px;
+  height: 14px;
+}
+
+@media (max-width: 900px) {
+  .area-shops { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .area-shops { grid-template-columns: 1fr; }
+  .pref-grid { grid-template-columns: repeat(2, 1fr); }
+  .tab-btn { padding: 6px 12px; font-size: 12px; }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="crown" viewBox="0 0 24 24"><path d="M2 19h20l1-11-6 5-5-9-5 9-6-5z" fill="currentColor"/></symbol>
+<symbol id="bowl" viewBox="0 0 40 40"><path d="M4 18h32a16 16 0 0 1-32 0z" fill="currentColor"/><path d="M12 14c4-3 10-3 16 0M14 9l16-5M13 11l17-5" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/></symbol>
+<symbol id="pin" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" fill="currentColor"/></symbol>
+<symbol id="srch" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15 15l6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+<symbol id="chev" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="star" viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7.2-6.3-3.7-6.3 3.7 1.6-7.2L2 9.6 9 9z" fill="currentColor"/></symbol>
+<symbol id="menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+</svg>
+
+<header>
+ <div class="wrap hd">
+  <a class="logo" href="index.html">
+   <svg class="ic"><use href="#bowl"/></svg>
+   <span><b>全国<i>ラーメン</i>ランキング <svg class="ic c"><use href="#crown"/></svg></b><small>日本全国のうまいラーメンを、ランキングで紹介</small></span>
+  </a>
+  <nav id="nav">
+   <a href="index.html">ホーム</a>
+   <a href="index.html#ranking">ランキング</a>
+   <a href="area.html" class="active">エリアから探す</a>
+   <a href="index.html#type">ラーメンの種類</a>
+   <a href="index.html#feature">ラーメン特集</a>
+   <a href="index.html#review">口コミ・レビュー</a>
+  </nav>
+  <span class="sp"></span>
+  <a class="hbtn" href="index.html#search" aria-label="検索"><svg class="ic"><use href="#srch"/></svg></a>
+  <button class="hbtn" id="menuBtn" aria-label="メニュー" aria-expanded="false"><svg class="ic"><use href="#menu"/></svg></button>
+ </div>
+</header>
+
+<main>
+ <div class="page-header">
+  <div class="wrap">
+   <h1><span>エリア</span>からラーメンを探す</h1>
+   <p>47都道府県から気になる地域を選んで、地元で評判の絶品ラーメンを見つけよう。</p>
+  </div>
+ </div>
+
+ <!-- エリアショートカットタブ（追従表示） -->
+ <div class="area-tabs-wrap">
+  <div class="wrap">
+   <div class="area-tabs">
+    <button class="tab-btn active" onclick="scrollToRegion('all', this)">すべて</button>
+    <button class="tab-btn" onclick="scrollToRegion('hokkaido-tohoku', this)">北海道・東北</button>
+    <button class="tab-btn" onclick="scrollToRegion('kanto', this)">関東</button>
+    <button class="tab-btn" onclick="scrollToRegion('chubu', this)">中部</button>
+    <button class="tab-btn" onclick="scrollToRegion('kinki', this)">近畿</button>
+    <button class="tab-btn" onclick="scrollToRegion('chugoku-shikoku', this)">中国・四国</button>
+    <button class="tab-btn" onclick="scrollToRegion('kyushu-okinawa', this)">九州・沖縄</button>
+   </div>
+  </div>
+ </div>
+
+ <div class="wrap">
+  <!-- 北海道・東北エリア -->
+  <section class="region-block" id="hokkaido-tohoku">
+   <div class="region-title">
+    <svg class="ic" style="color:var(--gold,#d4af37);width:24px;height:24px;"><use href="#pin"/></svg>
+    <h2>北海道・東北エリア</h2>
+   </div>
+   <div class="pref-grid">
+    <a href="#" class="pref-card"><span>北海道</span><small>182店</small></a>
+    <a href="#" class="pref-card"><span>青森県</span><small>45店</small></a>
+    <a href="#" class="pref-card"><span>岩手県</span><small>38店</small></a>
+    <a href="#" class="pref-card"><span>宮城県</span><small>72店</small></a>
+    <a href="#" class="pref-card"><span>秋田県</span><small>31店</small></a>
+    <a href="#" class="pref-card"><span>山形県</span><small>64店</small></a>
+    <a href="#" class="pref-card"><span>福島県</span><small>58店</small></a>
+   </div>
+   <div class="shop-section-title"><svg class="ic" style="color:var(--red,#e63946);width:16px;height:16px;"><use href="#crown"/></svg> 北海道・東北の注目人気店</div>
+   <div class="area-shops">
+    <a class="card" href="#">
+     <img src="img/c.jpg" alt="味噌ラーメン" onerror="this.src='https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=500&auto=format&fit=crop'">
+     <div class="info">
+      <b>らーめん ふくの屋（札幌）</b>
+      <small>濃厚味噌ラーメン</small>
+      <div class="score"><svg class="ic"><use href="#star"/></svg> 4.4（1,892件）</div>
+     </div>
+    </a>
+    <a class="card" href="#">
+     <img src="img/b.jpg" alt="喜多方ラーメン" onerror="this.src='https://images.unsplash.com/photo-1552611052-33e04de081de?w=500&auto=format&fit=crop'">
+     <div class="info">
+      <b>会津蔵出し麺 喜多屋（福島・喜多方）</b>
+      <small>蔵出し醤油ラーメン</small>
+      <div class="score"><svg class="ic"><use href="#star"/></svg> 4.3（980件）</div>
+     </div>
+    </a>
+    <a class="card" href="#">
+     <img src="img/a.jpg" alt="煮干しラーメン" onerror="this.src='https://images.unsplash.com/photo-1591814468924-caf88d1232e1?w=500&auto=format&fit=crop'">
+     <div class="info">
+      <b>煮干中華 津軽本舗（青森）</b>
+      <small>濃厚煮干し中華そば</small>
+      <div class="score"><svg class="ic"><use href="#star"/></svg> 4.2（750件）</div>
+     </div>
+    </a>
+   </div>
+  </section>
+
+  <!-- 関東エリア -->
+  <section class="region-block" id="kanto">
+   <div class="region-title">
+    <svg class="ic" style="color:var(--gold,#d4af37);width:24px;height:24px;"><use href="#pin"/></svg>
+    <h2>関東エリア</h2>
+   </div>
+   <div class="pref-grid">
+    <a href="#" class="pref-card"><span>東京都</span><small>420店</small></a>
+    <a href="#" class="pref-card"><span>神奈川県</span><small>195店</small></a>
+    <a href="#" class="pref-card"><span>埼玉県</span><small>130店</small></a>
+    <a href="#" class="pref-card"><span>千葉県</span><small>115店</small></a>
+    <a href="#" class="pref-card"><span>茨城県</span><small>62店</small></a>
+    <a href="#" class="pref-card"><span>栃木県</span><small>54店</small></a>
+    <a href="#" class="pref-card"><span>群馬県</span><small>48店</small></a>
+   </div>
+   <div class="shop-section-title"><svg class="ic" style="color:var(--red,#e63946);width:16px;height:16px;"><use href="#crown"/></svg> 関東の注目人気店</div>
+   <div class="area-shops">
+    <a class="card" href="#">
+     <img src="img/b.jpg" alt="豚骨ラーメン" onerror="this.src='https://images.unsplash.com/photo-1552611052-33e04de081de?w=500&auto=format&fit=crop'">
+     <div class="info">
+      <b>一閒（東京・千代田区）</b>
+      <small>特製とんこつラーメン</small>
+      <div class="score"><svg class="ic"><use href="#star"/></svg> 4.5（2,341件）</div>
+     </div>
+    </a>
+    <a class="card" href="#">
+     <img src="img/d.jpg" alt="醤油ラーメン" onerror="this.src='https://images.unsplash.com/photo-1617093727343-374698b1b08d?w=500&auto=format&fit=crop'">
+     <div class="info">
+      <b>麺や いちのはな（東京・新宿）</b>
+      <small>芳醇淡麗 醤油ラーメン</small>
+      <div class="score"><svg class="ic"><use href="#star"/></svg> 4.3（1,756件）</div>
+     </div>
+    </a>
+    <a class="card" href="#">
+     <img src="img/a.jpg" alt="家系ラーメン" onerror="this.src='https://images.unsplash.com/photo-1591814468924-caf88d1232e1?w=500&auto=format&fit=crop'">
+     <div class="info">
+      <b>横浜家系 濱家（神奈川・横浜）</b>
+      <small>豚骨醤油家系ラーメン</small>
+      <div class="score"><svg class="ic"><use href="#star"/></svg> 4.4（1,420件）</div>
+     </div>
+    </a>
+   </div>
+  </section>
+
+  <!-- 中部エリア -->
+  <section class="region-block" id="chubu">
+   <div class="region-title">
+    <svg class="ic" style="color:var(--gold,#d4af37);width:24px;height:24px;"><use href="#pin"/></svg>
+    <h2>中部エリア</h2>
+   </div>
+   <div class="pref-grid">
+    <a href="#" class="pref-card"><span>愛知県</span><small>140店</small></a>
+    <a href="#" class="pref-card"><span>静岡県</span><small>76店</small></a>
+    <a href="#" class="pref-card"><span>岐阜県</span><small>45店</small></a>
+    <a href="#" class="pref-card"><span>三重県</span><small>41店</small></a>
+    <a href="#" class="pref-card"><span>新潟県</span><small>88店</small></a>
+    <a href="#" class="pref-card"><span>長野県</span><small>52店</small></a>
+    <a href="#" class="pref-card"><span>山梨県</span><small>32店</small></a>
+    <a href="#" class="pref-card"><span>石川県</span><small>39店</small></a>
+    <a href="#" class="pref-card"><span>富山県</span><small>36店</small></a>
+    <a href="#" class="pref-card"><span>福井県</span><small>28店</small></a>
+   </div>
+   <div class="shop-section-title"><svg class="ic" style="color:var(--red,#e63946);width:16px;height:16px;"><use href="#crown"/></svg> 中部の注目人気店</div>
+   <div class="area-shops">
+    <a class="card" href="#">
+     <img src="img/c.jpg" alt="台湾ラーメン" onerror="this.src='https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=500&auto=format&fit=crop'">
+     <div class="info">
+      <b>麺屋 龍昇（愛知・名古屋）</b>
+      <small>元祖旨辛 台湾ラーメン</small>
+      <div class="score"><svg class="ic"><use href="#star"/></svg> 4.3（1,120件）</div>
+     </div>
+    </a>
+    <a class="card" href="#">
+     <img src="img/b.jpg" alt="富山ブラック" onerror="this.src='https://images.unsplash.com/photo-1552611052-33e04de081de?w=500&auto=format&fit=crop'">
+     <div class="info">
+      <b>富山漆黒麺 漆黒庵（富山）</b>
+      <small>秘伝醤油 富山ブラック</small>
+      <div class="score"><svg class="ic"><use href="#star"/></svg> 4.2（840件）</div>
+     </div>
+    </a>
+   </div>
+  </section>
+
+  <!-- 近畿エリア -->
+  <section class="region-block" id="kinki">
+   <div class="region-title">
+    <svg class="ic" style="color:var(--gold,#d4af37);width:24px;height:24px;"><use href="#pin"/></svg>
+    <h2>近畿エリア</h2>
+   </div>
+   <div class="pref-grid">
+    <a href="#" class="pref-card"><span>大阪府</span><small>280店</small></a>
+    <a href="#" class="pref-card"><span>京都府</span><small>110店</small></a>
+    <a href="#" class="pref-card"><span>兵庫県</span><small>95店</small></a>
+    <a href="#" class="pref-card"><span>滋賀県</span><small>34店</small></a>
+    <a href="#" class="pref-card"><span>奈良県</span><small>39店</small></a>
+    <a href="#" class="pref-card"><span>和歌山県</span><small>30店</small></a>
+   </div>
+   <div class="shop-section-title"><svg class="ic" style="color:var(--red,#e63946);width:16px;height:16px;"><use href="#crown"/></svg> 近畿の注目人気店</div>
+   <div class="area-shops">
+    <a class="card" href="#">
+     <img src="img/a.jpg" alt="鶏白湯ラーメン" onerror="this.src='https://images.unsplash.com/photo-1591814468924-caf88d1232e1?w=500&auto=format&fit=crop'">
+     <div class="info">
+      <b>京都 鴨々堂（京都・祇園）</b>
+      <small>濃厚鶏白湯そば</small>
+      <div class="score"><svg class="ic"><use href="#star"/></svg> 4.6（2,100件）</div>
+     </div>
+    </a>
+    <a class="card" href="#">
+     <img src="img/d.jpg" alt="和歌山ラーメン" onerror="this.src='https://images.unsplash.com/photo-1617093727343-374698b1b08d?w=500&auto=format&fit=crop'">
+     <div class="info">
+      <b>紀州中華そば 紀伊国屋（和歌山）</b>
+      <small>井出系 豚骨醤油ラーメン</small>
+      <div class="score"><svg class="ic"><use href="#star"/></svg> 4.3（910件）</div>
+     </div>
+    </a>
+   </div>
+  </section>
+
+  <!-- 中国・四国エリア -->
+  <section class="region-block" id="chugoku-shikoku">
+   <div class="region-title">
+    <svg class="ic" style="color:var(--gold,#d4af37);width:24px;height:24px;"><use href="#pin"/></svg>
+    <h2>中国・四国エリア</h2>
+   </div>
+   <div class="pref-grid">
+    <a href="#" class="pref-card"><span>広島県</span><small>75店</small></a>
+    <a href="#" class="pref-card"><span>岡山県</span><small>48店</small></a>
+    <a href="#" class="pref-card"><span>山口県</span><small>31店</small></a>
+    <a href="#" class="pref-card"><span>鳥取県</span><small>22店</small></a>
+    <a href="#" class="pref-card"><span>島根県</span><small>20店</small></a>
+    <a href="#" class="pref-card"><span>香川県</span><small>35店</small></a>
+    <a href="#" class="pref-card"><span>徳島県</span><small>29店</small></a>
+    <a href="#" class="pref-card"><span>愛媛県</span><small>33店</small></a>
+    <a href="#" class="pref-card"><span>高知県</span><small>24店</small></a>
+   </div>
+   <div class="shop-section-title"><svg class="ic" style="color:var(--red,#e63946);width:16px;height:16px;"><use href="#crown"/></svg> 中国・四国の注目人気店</div>
+   <div class="area-shops">
+    <a class="card" href="#">
+     <img src="img/b.jpg" alt="尾道ラーメン" onerror="this.src='https://images.unsplash.com/photo-1552611052-33e04de081de?w=500&auto=format&fit=crop'">
+     <div class="info">
+      <b>尾道中華 瀬戸内丸（広島・尾道）</b>
+      <small>背脂醤油 尾道ラーメン</small>
+      <div class="score"><svg class="ic"><use href="#star"/></svg> 4.4（1,230件）</div>
+     </div>
+    </a>
+    <a class="card" href="#">
+     <img src="img/c.jpg" alt="徳島ラーメン" onerror="this.src='https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=500&auto=format&fit=crop'">
+     <div class="info">
+      <b>阿波徳島本舗（徳島）</b>
+      <small>甘辛豚骨醤油 徳島ラーメン</small>
+      <div class="score"><svg class="ic"><use href="#star"/></svg> 4.3（880件）</div>
+     </div>
+    </a>
+   </div>
+  </section>
+
+  <!-- 九州・沖縄エリア -->
+  <section class="region-block" id="kyushu-okinawa">
+   <div class="region-title">
+    <svg class="ic" style="color:var(--gold,#d4af37);width:24px;height:24px;"><use href="#pin"/></svg>
+    <h2>九州・沖縄エリア</h2>
+   </div>
+   <div class="pref-grid">
+    <a href="#" class="pref-card"><span>福岡県</span><small>210店</small></a>
+    <a href="#" class="pref-card"><span>佐賀県</span><small>31店</small></a>
+    <a href="#" class="pref-card"><span>長崎県</span><small>36店</small></a>
+    <a href="#" class="pref-card"><span>熊本県</span><small>68店</small></a>
+    <a href="#" class="pref-card"><span>大分県</span><small>40店</small></a>
+    <a href="#" class="pref-card"><span>宮崎県</span><small>37店</small></a>
+    <a href="#" class="pref-card"><span>鹿児島県</span><small>54店</small></a>
+    <a href="#" class="pref-card"><span>沖縄県</span><small>42店</small></a>
+   </div>
+   <div class="shop-section-title"><svg class="ic" style="color:var(--red,#e63946);width:16px;height:16px;"><use href="#crown"/></svg> 九州・沖縄の注目人気店</div>
+   <div class="area-shops">
+    <a class="card" href="#">
+     <img src="img/b.jpg" alt="博多豚骨ラーメン" onerror="this.src='https://images.unsplash.com/photo-1552611052-33e04de081de?w=500&auto=format&fit=crop'">
+     <div class="info">
+      <b>博多極龍軒（福岡・博多）</b>
+      <small>元祖泡系 博多豚骨</small>
+      <div class="score"><svg class="ic"><use href="#star"/></svg> 4.6（3,120件）</div>
+     </div>
+    </a>
+    <a class="card" href="#">
+     <img src="img/a.jpg" alt="熊本ラーメン" onerror="this.src='https://images.unsplash.com/photo-1591814468924-caf88d1232e1?w=500&auto=format&fit=crop'">
+     <div class="info">
+      <b>火の国 熊本家（熊本）</b>
+      <small>マー油効く 熊本ラーメン</small>
+      <div class="score"><svg class="ic"><use href="#star"/></svg> 4.4（1,150件）</div>
+     </div>
+    </a>
+   </div>
+  </section>
+ </div>
+</main>
+
+<footer>
+ <div class="wrap">
+  <div class="ft">
+   <div>
+    <a class="logo" href="index.html">
+     <svg class="ic" style="color:#fff"><use href="#bowl"/></svg>
+     <b style="font-size:17px">全国ラーメンランキング <svg class="ic c"><use href="#crown"/></svg></b>
+    </a>
+    <p class="about">全国のラーメン店と、ラーメンを愛する人をつなぐ情報サイト。<br>今日の一杯から、旅先で出会う特別な一杯まで。<br>ラーメンの楽しさとおいしさを、全国へ。</p>
+   </div>
+   <div><h4>サイトメニュー</h4><ul><li><a href="index.html#ranking">全国ランキング</a></li><li><a href="area.html">エリアから探す</a></li><li><a href="index.html#type">ラーメンの種類</a></li><li><a href="index.html#feature">ラーメン特集</a></li></ul></div>
+   <div><h4>その他</h4><ul><li><a href="index.html#review">口コミ・レビュー</a></li><li><a href="#">掲載店舗について</a></li><li><a href="#">お問い合わせ</a></li><li><a href="#">プライバシーポリシー</a></li></ul></div>
+   <div class="sns"><a href="#" aria-label="X">𝕏</a><a href="#" aria-label="Instagram">◎</a><a href="#" aria-label="YouTube">▶</a><button id="top" aria-label="ページ上部へ">︿</button></div>
+  </div>
+  <p class="copy">© 全国ラーメンランキング. All Right Reserved.</p>
+ </div>
+</footer>
+
+<script>
+(function(){
+ var $=function(s){return document.querySelector(s)};
+ var nav=$('#nav'),mb=$('#menuBtn');
+ mb.addEventListener('click',function(){var o=nav.classList.toggle('open');mb.setAttribute('aria-expanded',o)});
+ nav.addEventListener('click',function(e){if(e.target.tagName==='A'){nav.classList.remove('open');mb.setAttribute('aria-expanded',false)}});
+ $('#top').addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+})();
+
+function scrollToRegion(id, btn) {
+  // アクティブボタンの見た目を変更
+  var buttons = document.querySelectorAll('.tab-btn');
+  buttons.forEach(function(b) { b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+
+  if (id === 'all') {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  } else {
+    var el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({behavior: 'smooth'});
+    }
+  }
+}
+</script>
+</body>
+</html>

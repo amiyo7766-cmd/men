@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>中国・四国・九州のラーメン｜全国ラーメンランキング</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700;900&display=swap">
+<style>
+.crumb{font-size:11px;margin-bottom:14px;color:#e8ddd3}
+.crumb a{border-bottom:1px solid currentColor}
+.jump{display:flex;gap:10px;flex-wrap:wrap;padding:18px 0 4px}
+.jump a{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border:1px solid var(--line);border-radius:20px;font-size:12px;font-weight:700;background:var(--card)}
+.jump a:hover{border-color:var(--red);color:var(--red)}
+.pref{padding:28px 0 8px}
+.pref+.pref{border-top:1px solid var(--line)}
+.local{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.local .card{display:block;height:100%;padding:16px 16px 14px}
+.local .where{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--muted)}
+.local .where .ic{color:var(--red);width:13px;height:13px}
+.local h3{font:700 16px/1.5 "Noto Serif JP",serif;margin:4px 0 6px}
+.local p{font-size:12px;line-height:1.8}
+.local .tag{display:inline-block;margin-top:10px;padding:2px 10px;font-size:10.5px;font-weight:700;color:var(--red);border:1px solid var(--red);border-radius:2px}
+.tail{display:flex;flex-wrap:wrap;gap:14px;padding:30px 0 10px}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="crown" viewBox="0 0 24 24"><path d="M2 19h20l1-11-6 5-5-9-5 9-6-5z" fill="currentColor"/></symbol>
+<symbol id="bowl" viewBox="0 0 40 40"><path d="M4 18h32a16 16 0 0 1-32 0z" fill="currentColor"/><path d="M12 14c4-3 10-3 16 0M14 9l16-5M13 11l17-5" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/></symbol>
+<symbol id="pin" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" fill="currentColor"/></symbol>
+<symbol id="srch" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15 15l6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+<symbol id="arr" viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="map" viewBox="0 0 40 40"><path d="M24 3l4 5-2 6 3 3-1 6-6 3-3 6-3-2 2-6-5-3 3-5-4-4 5-2 4 2z" fill="currentColor"/></symbol>
+</svg>
+
+<header>
+ <div class="wrap hd">
+  <a class="logo" href="index.html">
+   <svg class="ic"><use href="#bowl"/></svg>
+   <span><b>全国<i>ラーメン</i>ランキング <svg class="ic c"><use href="#crown"/></svg></b><small>日本全国のうまいラーメンを、ランキングで紹介</small></span>
+  </a>
+  <nav id="nav">
+   <a href="index.html">ホーム</a><a href="index.html#ranking">ランキング</a><a href="index.html#area">エリアから探す</a><a href="index.html#type">ラーメンの種類</a><a href="index.html#feature">ラーメン特集</a><a href="index.html#review">口コミ・レビュー</a>
+  </nav>
+  <span class="sp"></span>
+  <a class="hbtn" href="index.html#search" aria-label="検索"><svg class="ic"><use href="#srch"/></svg></a>
+  <button class="hbtn" id="menuBtn" aria-label="メニュー" aria-expanded="false"><svg class="ic"><use href="#menu"/></svg></button>
+ </div>
+</header>
+
+<main>
+<div class="hero">
+ <img src="img/h.jpg" alt="">
+ <div class="wrap">
+  <p class="crumb"><a href="index.html">ホーム</a> ＞ <a href="index.html#area">エリアから探す</a> ＞ 中国・四国・九州</p>
+  <h1>中国・四国・九州の<br>ご当地ラーメン</h1>
+  <h2>海と山の恵みが、一杯になる。</h2>
+  <p>尾道の背脂醤油から、博多の細麺とんこつ、熊本のマー油まで。土地ごとにまったく違う味わいを巡ります。</p>
+  <div class="btns">
+   <a class="btn red" href="index.html#search"><svg class="ic"><use href="#srch"/></svg>このエリアのお店を検索</a>
+   <a class="btn line" href="index.html#ranking"><svg class="ic"><use href="#crown"/></svg>全国ランキングを見る</a>
+  </div>
+ </div>
+</div>
+
+<section style="padding-top:0">
+ <div class="wrap">
+  <div class="jump">
+   <a href="#chugoku">中国</a><a href="#shikoku">四国</a><a href="#kyushu">九州</a>
+  </div>
+
+  <div class="pref" id="chugoku">
+   <div class="sh"><svg class="ic"><use href="#map"/></svg><div><small>CHUGOKU</small><h2>中国地方</h2><p>広島・岡山・鳥取など。醤油系と個性派がそろいます。</p></div></div>
+   <div class="local">
+    <a class="card" href="syouyu.html"><span class="where"><svg class="ic"><use href="#pin"/></svg>広島</span><h3>尾道ラーメン</h3><p>小魚の出汁を効かせた醤油スープに、背脂が浮かびます。平たい細麺が特徴です。</p><span class="tag">醤油</span></a>
+    <a class="card" href="index.html#search"><span class="where"><svg class="ic"><use href="#pin"/></svg>広島</span><h3>広島つけ麺</h3><p>冷たい麺を、ラー油とごまの効いた辛口のつけだれで食べます。生野菜が添えられます。</p><span class="tag">つけ麺</span></a>
+    <a class="card" href="syouyu.html"><span class="where"><svg class="ic"><use href="#pin"/></svg>岡山</span><h3>笠岡ラーメン</h3><p>鶏ガラの出汁を使った醤油スープに、鶏チャーシューをのせた一杯です。</p><span class="tag">醤油</span></a>
+    <a class="card" href="index.html#search"><span class="where"><svg class="ic"><use href="#pin"/></svg>鳥取</span><h3>牛骨ラーメン</h3><p>牛の骨でとった、コクのあるスープ。ほのかな甘みが後を引きます。</p><span class="tag">牛骨</span></a>
+   </div>
+  </div>
+
+  <div class="pref" id="shikoku">
+   <div class="sh"><svg class="ic"><use href="#map"/></svg><div><small>SHIKOKU</small><h2>四国地方</h2><p>徳島・高知など。ほかでは出会えない食べ方が魅力です。</p></div></div>
+   <div class="local">
+    <a class="card" href="tonkotu.html"><span class="where"><svg class="ic"><use href="#pin"/></svg>徳島</span><h3>徳島ラーメン</h3><p>濃い色の豚骨醤油スープに、甘辛く煮た豚バラ肉と生卵をのせます。ごはんと一緒に食べる人も多い一杯です。</p><span class="tag">豚骨醤油</span></a>
+    <a class="card" href="syouyu.html"><span class="where"><svg class="ic"><use href="#pin"/></svg>高知・須崎</span><h3>鍋焼きラーメン</h3><p>土鍋で煮立てたまま運ばれる、熱々の醤油ラーメン。最後まで冷めにくいのが魅力です。</p><span class="tag">醤油</span></a>
+   </div>
+  </div>
+
+  <div class="pref" id="kyushu">
+   <div class="sh"><svg class="ic"><use href="#map"/></svg><div><small>KYUSHU</small><h2>九州地方</h2><p>福岡・熊本・鹿児島・宮崎。とんこつの本場です。</p></div></div>
+   <div class="local">
+    <a class="card" href="tonkotu.html"><span class="where"><svg class="ic"><use href="#pin"/></svg>福岡</span><h3>博多ラーメン</h3><p>白濁したとんこつスープに、ぱきっとした細麺。食べ終わりに「替え玉」を頼むのが定番です。</p><span class="tag">豚骨</span></a>
+    <a class="card" href="tonkotu.html"><span class="where"><svg class="ic"><use href="#pin"/></svg>福岡・久留米</span><h3>久留米ラーメン</h3><p>豚骨を長時間煮出した、濃厚でコクのあるスープ。とんこつラーメン発祥の地として知られます。</p><span class="tag">豚骨</span></a>
+    <a class="card" href="tonkotu.html"><span class="where"><svg class="ic"><use href="#pin"/></svg>熊本</span><h3>熊本ラーメン</h3><p>豚骨と鶏ガラを合わせたスープに、焦がしにんにくのマー油と揚げにんにくが香ります。</p><span class="tag">豚骨</span></a>
+    <a class="card" href="tonkotu.html"><span class="where"><svg class="ic"><use href="#pin"/></svg>鹿児島</span><h3>鹿児島ラーメン</h3><p>豚骨に鶏ガラや野菜を合わせた、あっさりまろやかなスープ。漬物が添えられることもあります。</p><span class="tag">豚骨</span></a>
+    <a class="card" href="index.html#search"><span class="where"><svg class="ic"><use href="#pin"/></svg>宮崎</span><h3>辛麺</h3><p>唐辛子とにんにくを効かせた、体が温まる辛口のスープ。辛さを選べるお店が多いです。</p><span class="tag">辛口</span></a>
+   </div>
+  </div>
+
+  <div class="tail">
+   <a class="btn red" href="index.html#search">条件を指定してお店を探す <svg class="ic"><use href="#arr"/></svg></a>
+   <a class="btn out" href="index.html#area">ほかのエリアを見る</a>
+  </div>
+ </div>
+</section>
+</main>
+
+<footer>
+ <div class="wrap">
+  <div class="ft">
+   <div><a class="logo" href="index.html"><svg class="ic" style="color:#fff"><use href="#bowl"/></svg><b style="font-size:17px">全国ラーメンランキング <svg class="ic c"><use href="#crown"/></svg></b></a>
+    <p class="about">全国のラーメン店と、ラーメンを愛する人をつなぐ情報サイト。<br>今日の一杯から、旅先で出会う特別な一杯まで。<br>ラーメンの楽しさとおいしさを、全国へ。</p></div>
+   <div><h4>サイトメニュー</h4><ul><li><a href="index.html#ranking">全国ランキング</a></li><li><a href="index.html#area">エリアから探す</a></li><li><a href="index.html#type">ラーメンの種類</a></li><li><a href="index.html#feature">ラーメン特集</a></li></ul></div>
+   <div><h4>その他</h4><ul><li><a href="review.html">口コミ・レビュー</a></li><li><a href="keisai.html">掲載店舗について</a></li><li><a href="otoiawase.html">お問い合わせ</a></li><li><a href="privacy.html">プライバシーポリシー</a></li></ul></div>
+   <div class="sns"><a href="#" aria-label="X">𝕏</a><a href="#" aria-label="Instagram">◎</a><a href="#" aria-label="YouTube">▶</a><button id="top" aria-label="ページ上部へ">︿</button></div>
+  </div>
+  <p class="copy">© 全国ラーメンランキング. All Right Reserved.</p>
+ </div>
+</footer>
+
+<script>
+(function(){
+ var nav=document.getElementById('nav'),mb=document.getElementById('menuBtn');
+ mb.addEventListener('click',function(){var o=nav.classList.toggle('open');mb.setAttribute('aria-expanded',o)});
+ nav.addEventListener('click',function(e){if(e.target.tagName==='A'){nav.classList.remove('open');mb.setAttribute('aria-expanded',false)}});
+ document.getElementById('top').addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+})();
+</script>
+</body>
+</html>
